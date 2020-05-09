@@ -14,4 +14,4 @@ mkdir -p web
 python3 make_table.py > web/table.html 
 
 # be sure files are readable on the server
-ssh water chmod 644 public_html/wicentowski/covid/table.html public_html/wicentowski/covid/png/*
+ssh water chmod -R a+rX Dropbox/covid/web/

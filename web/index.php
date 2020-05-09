@@ -26,8 +26,10 @@ echo date('l F d, Y \a\t H:i:s', filemtime("/home/richardw/Dropbox/covid/COVID-1
     </table>
 
     <h4>
-      <p>Data from the <a href="https://github.com/CSSEGISandData/COVID-19">JHU CSSE COVID-19 Dataset</p>
-      <p><a href="paplots.html">Jupyter notebook</a> used to create these graphs.</p>
-      <p>Comments welcome <a href="https://twitter.com/richwiss/">@richwiss</a></p>
+      <p>
+	Data from the <a href="https://github.com/CSSEGISandData/COVID-19">JHU CSSE COVID-19 Dataset</a> and <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html">the US Census Bureau</a>.<BR />
+      Source code and data available from <a href="https://github.com/richwiss/covid">github</a>. Pull requests and comments welcome.<BR /> 
+	Created by <a href="https://twitter.com/richwiss/">@richwiss</a>
+      </p>
   </body>
 </html>
