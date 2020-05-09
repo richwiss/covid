@@ -1,3 +1,12 @@
+# JHU COVID DATA
+COVID-19/
+# old things
+old/
+# png files
+png/
+# generated table data
+web/table.html
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
