@@ -8,10 +8,9 @@ git pull
 cd -
 # create new graphs
 mkdir -p png
-jupyter nbconvert --to notebook --execute paplots.ipynb --ExecutePreprocessor.timeout=-1
-# create table
-mkdir -p web
-python3 make_table.py > web/table.html 
+jupyter nbconvert --to notebook --execute plots.ipynb --ExecutePreprocessor.timeout=-1
+# create tables
+python3 make_table.py -s Pennsylvania
 
 # be sure files are readable on the server
-ssh water chmod -R a+rX Dropbox/covid/web/ Dropbox/covid/png/
+ssh ginger chmod -R a+rX /dropbox/richardw/Dropbox/covid/web/ /dropbox/richardw/Dropbox/covid/states/
