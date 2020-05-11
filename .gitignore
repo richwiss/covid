@@ -6,6 +6,8 @@ old/
 png/
 # generated table data
 web/table.html
+# state files
+states/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
