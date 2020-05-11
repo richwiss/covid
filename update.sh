@@ -8,10 +8,10 @@ git pull
 cd -
 # create new graphs
 mkdir -p png
-jupyter nbconvert --to notebook --execute paplot.ipynb --ExecutePreprocessor.timeout=-1
+jupyter nbconvert --to notebook --execute paplots.ipynb --ExecutePreprocessor.timeout=-1
 # create table
 mkdir -p web
 python3 make_table.py > web/table.html 
 
 # be sure files are readable on the server
-ssh water chmod -R a+rX Dropbox/covid/web/
+ssh water chmod -R a+rX Dropbox/covid/web/ Dropbox/covid/png/
