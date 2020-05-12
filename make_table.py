@@ -64,7 +64,7 @@ for line in open('web/index.php'):
 
 
 # Read data from phases
-if statename=='Pennyslvania':
+if statename=='Pennsylvania':
     regions = defaultdict(set)
     phases = dict()
     df = pandas.read_csv('phases.csv', parse_dates=['Effective_Date'])
