@@ -8,6 +8,8 @@ png/
 web/table.html
 # state files
 states/
+# converted notebook
+plots.nbconvert.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
