@@ -89,7 +89,7 @@ Northwest Arctic,Alaska,7621,
 Petersburg,Alaska,3266,
 Prince of Wales-Hyder,Alaska,6203,
 Sitka,Alaska,8493,
-Skagway Municipality,Alaska,1183,
+Skagway,Alaska,1183,
 Southeast Fairbanks,Alaska,6893,
 Valdez-Cordova,Alaska,9202,
 Wrangell,Alaska,2502,
@@ -418,7 +418,7 @@ Clarke,Georgia,128331,
 Clay,Georgia,2834,
 Clayton,Georgia,292256,
 Clinch,Georgia,6618,
-Cobb,Georgia,760141,
+Cobb,Georgia,760141,Atlanta
 Coffee,Georgia,43273,
 Colquitt,Georgia,45600,
 Columbia,Georgia,156714,
@@ -429,7 +429,7 @@ Crisp,Georgia,22372,
 Dade,Georgia,16116,
 Dawson,Georgia,26108,
 Decatur,Georgia,26404,
-DeKalb,Georgia,759297,
+DeKalb,Georgia,759297,Atlanta
 Dodge,Georgia,20605,
 Dooly,Georgia,13390,
 Dougherty,Georgia,87956,
@@ -445,14 +445,14 @@ Fayette,Georgia,114421,
 Floyd,Georgia,98498,
 Forsyth,Georgia,244252,
 Franklin,Georgia,23349,
-Fulton,Georgia,1063937,
+Fulton,Georgia,1063937,Atlanta
 Gilmer,Georgia,31369,
 Glascock,Georgia,2971,
 Glynn,Georgia,85292,
 Gordon,Georgia,57963,
 Grady,Georgia,24633,
 Greene,Georgia,18324,
-Gwinnett,Georgia,936250,
+Gwinnett,Georgia,936250,Atlanta
 Habersham,Georgia,45328,
 Hall,Georgia,204441,
 Hancock,Georgia,8457,
@@ -1827,69 +1827,69 @@ Taos,New Mexico,32723,
 Torrance,New Mexico,15461,
 Union,New Mexico,4059,
 Valencia,New Mexico,76688,
-Albany,New York,305506,
-Allegany,New York,46091,
+Albany,New York,305506,Capital
+Allegany,New York,46091,Western New York
 Bronx,New York,1418207,New York City
-Broome,New York,190488,
-Cattaraugus,New York,76117,
-Cayuga,New York,76576,
-Chautauqua,New York,126903,
-Chemung,New York,83456,
-Chenango,New York,47207,
-Clinton,New York,80485,
-Columbia,New York,59461,
-Cortland,New York,47581,
-Delaware,New York,44135,
-Dutchess,New York,294218,
-Erie,New York,918702,
-Essex,New York,36885,
-Franklin,New York,50022,
-Fulton,New York,53383,
-Genesee,New York,57280,
-Greene,New York,47188,
-Hamilton,New York,4416,
-Herkimer,New York,61319,
-Jefferson,New York,109834,
+Broome,New York,190488,Southern Tier
+Cattaraugus,New York,76117,Western New York
+Cayuga,New York,76576,Central New York
+Chautauqua,New York,126903,Western New York
+Chemung,New York,83456,Southern Tier
+Chenango,New York,47207,Southern Tier
+Clinton,New York,80485,North Country
+Columbia,New York,59461,Capital
+Cortland,New York,47581,Central New York
+Delaware,New York,44135,Southern Tier
+Dutchess,New York,294218,Mid-Hudson
+Erie,New York,918702,Western New York
+Essex,New York,36885,North Country
+Franklin,New York,50022,North Country
+Fulton,New York,53383,Mohawk Valley
+Genesee,New York,57280,Finger Lakes
+Greene,New York,47188,Capital
+Hamilton,New York,4416,North Country
+Herkimer,New York,61319,Mohawk Valley
+Jefferson,New York,109834,North Country
 Kings,New York,2559903,New York City
-Lewis,New York,26296,
-Livingston,New York,62914,
-Madison,New York,70941,
-Monroe,New York,741770,
-Montgomery,New York,49221,
-Nassau,New York,1356924,
+Lewis,New York,26296,North Country
+Livingston,New York,62914,Finger Lakes
+Madison,New York,70941,Central New York
+Monroe,New York,741770,Finger Lakes
+Montgomery,New York,49221,Mohawk Valley
+Nassau,New York,1356924,Long Island
 New York,New York,1628706,New York City
 New York City,New York,0,New York City
-Niagara,New York,209281,
-Oneida,New York,228671,
-Onondaga,New York,460528,
-Ontario,New York,109777,
-Orange,New York,384940,
-Orleans,New York,40352,
-Oswego,New York,117124,
-Otsego,New York,59493,
-Putnam,New York,98320,
+Niagara,New York,209281,Western New York
+Oneida,New York,228671,Mohawk Valley
+Onondaga,New York,460528,Central New York
+Ontario,New York,109777,Finger Lakes
+Orange,New York,384940,Mid-Hudson
+Orleans,New York,40352,Finger Lakes
+Oswego,New York,117124,Central New York
+Otsego,New York,59493,Mohawk Valley
+Putnam,New York,98320,Mid-Hudson
 Queens,New York,2253858,New York City
-Rensselaer,New York,158714,
+Rensselaer,New York,158714,Capital
 Richmond,New York,476143,New York City
-Rockland,New York,325789,
-St. Lawrence,New York,107740,
-Saratoga,New York,229863,
-Schenectady,New York,155299,
-Schoharie,New York,30999,
-Schuyler,New York,17807,
-Seneca,New York,34016,
-Steuben,New York,95379,
-Suffolk,New York,1476601,
-Sullivan,New York,75432,
-Tioga,New York,48203,
-Tompkins,New York,102180,
-Ulster,New York,177573,
-Warren,New York,63944,
-Washington,New York,61204,
-Wayne,New York,89918,
-Westchester,New York,967506,
-Wyoming,New York,39859,
-Yates,New York,24913,
+Rockland,New York,325789,Mid-Hudson
+St. Lawrence,New York,107740,North Country
+Saratoga,New York,229863,Capital
+Schenectady,New York,155299,Capital
+Schoharie,New York,30999,Mohawk Valley
+Schuyler,New York,17807,Southern Tier
+Seneca,New York,34016,Finger Lakes
+Steuben,New York,95379,Southern Tier
+Suffolk,New York,1476601,Long Island
+Sullivan,New York,75432,Mid-Hudson
+Tioga,New York,48203,Southern Tier
+Tompkins,New York,102180,Southern Tier
+Ulster,New York,177573,Mid-Hudson
+Warren,New York,63944,Capital
+Washington,New York,61204,Capital
+Wayne,New York,89918,Finger Lakes
+Westchester,New York,967506,Mid-Hudson
+Wyoming,New York,39859,Finger Lakes
+Yates,New York,24913,Finger Lakes
 Alamance,North Carolina,169509,
 Alexander,North Carolina,37497,
 Alleghany,North Carolina,11137,
@@ -3142,3 +3142,6 @@ Teton,Wyoming,23464,
 Uinta,Wyoming,20226,
 Washakie,Wyoming,7805,
 Weston,Wyoming,6927,
+,Guam,161700,
+,Virgin Islands,103700,
+,Northern Mariana Islands,52300,
