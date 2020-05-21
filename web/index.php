@@ -1,14 +1,19 @@
 <html>
   <head>
     <title>Covid-19 Graphs</title>   
-    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <link rel="stylesheet" type="text/css" href="../../mystyle.css">
   </head>
   <body>
     <h1>Covid-19 Graphs</h1>
-    <h3>Data Last Updated:  <?php
-echo date('l F d, Y \a\t H:i:s', filemtime("/home/richardw/Dropbox/covid/COVID-19/csse_covid_19_data/csse_covid_19_daily_reports"));
-?> 
-</h3>
+    <h4>
+      <p>Data updated:  <?php
+			  echo date('l F d, Y \a\t H:i:s', filemtime("/home/richardw/Dropbox/covid/COVID-19/csse_covid_19_data/csse_covid_19_daily_reports")); ?>
+      </p>
+      <p>Table updated:  <?php
+			  echo date('l F d, Y \a\t H:i:s', filemtime("index.php")); ?>
+      </p>
+      
+    </h4>
     <table class="serif">
       <thead>
         <tr>
