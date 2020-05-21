@@ -110,6 +110,7 @@ for line in open('web/index.php'):
     line = re.sub(r"'table.html'", f"'{tableout}'", line)
     print(line, file=phpout, end='')
     if 'Data from the' in line:
+        phase_data = ''
         if statename=="New_York":
             phase_data = 'Region status from the <a href="https://forward.ny.gov/regional-monitoring-dashboard">New York regional monitoring</a> website.<br/>'
         elif statename=='Pennsylvania':
