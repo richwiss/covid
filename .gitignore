@@ -6,10 +6,15 @@ old/
 png/
 # generated table data
 web/table.html
-# state files
+# directories
 states/
+staging/
+map/
+covidtracking/
 # converted notebook
 plots.nbconvert.ipynb
+plots.py
+error.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
