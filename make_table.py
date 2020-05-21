@@ -1,7 +1,7 @@
 import os
 import sys
 import re
-import pandas
+import pandas as pd
 from datetime import date
 from collections import defaultdict
 import argparse
@@ -17,6 +17,10 @@ class Phase(object):
             self.emoji='🟡'
         elif self.color == 'green':
             self.emoji='🟢'
+
+    def __repr__(self):
+        return f'Phase({self.color}, "{self.effective_date}")'
+
 
 def makerow(labels, directory, files, out):
     f1, f2, f3 = [name for name in files]
@@ -42,45 +46,80 @@ def makerow(labels, directory, files, out):
     """, file=out)
 
 
+
+
+def load_regions(statename):
+    """ load population and region data for counties if applicable"""
+
+    population_loc = 'resources'
+    df = pd.read_csv(f'{population_loc}/county-populations.csv')
+
+    regions = defaultdict(set)
+    sstate = statename.replace('_', ' ')
+
+    def f(row):
+        if row.State == sstate:
+            regions[row.Region].add(row.County)
+
+    df[df.Region.notnull()].apply(f, axis=1)
+
+    return regions
+
+def load_phases(statename):
+    """ read designated phases (PA only) """
+    phases = dict()
+    phases_loc = '.'
+    df = pd.read_csv(f'{phases_loc}/phases.csv', parse_dates=['Effective_Date'])
+    sstate = statename.replace('_', ' ')
+
+    def f(row):
+        if row.State == sstate:
+            phases[row.County] = Phase(row.Phase, row.Effective_Date)
+
+    df.apply(f, axis=1)
+    return phases
+
+
+def get_png_files(statedir):
+    """ Load list of generated .png files """
+    files=sorted(os.listdir(statedir))
+    return files
+
 # Choose the state
 parser = argparse.ArgumentParser(description='Make an HTML table for a state.')
 parser.add_argument("-s", "--state", required=True, help="state name")
 args = parser.parse_args()
 statename = args.state
 
-# Load list of generated .png files
-dir=f'states/{statename}'
-files=sorted(os.listdir(dir))
+# Read the phases and regions
+regions = load_regions(statename)
+phases = load_phases(statename)
+
+# Get list of PNG files
+statedir=f'states/{statename}'
+files = get_png_files(statedir)
+
+# Setup output directories
 tableout=f'{statename}_table.html'
 output=open(f'states/{statename}/{tableout}', 'w')
 
-# create index for the state if it doesn't exist
+# create index for the state
 phpout=open(f'states/{statename}/index.php', 'w')
 
 for line in open('web/index.php'):
     line = re.sub(r"'table.html'", f"'{tableout}'", line)
-    line = re.sub(r'"mystyle.css"', '../../mystyle.css', line)
     print(line, file=phpout, end='')
-
-
-# Read data from phases
-if statename=='Pennsylvania':
-    regions = defaultdict(set)
-    phases = dict()
-    df = pandas.read_csv('phases.csv', parse_dates=['Effective_Date'])
-    for _, row in df.iterrows():
-        (county, region, color, date) = row.values
-        region = region.replace(' ', '_')
-        regions[region].add(county)
-        phases[county] = Phase(color, date)
-else:
-    regions = defaultdict(set)
-    phases = dict()
-
+    if 'Data from the' in line:
+        if statename=="New_York":
+            phase_data = 'Region status from the <a href="https://forward.ny.gov/regional-monitoring-dashboard">New York regional monitoring</a> website.<br/>'
+        elif statename=='Pennsylvania':
+            phase_data = 'Region status from the <a href="https://www.health.pa.gov/topics/disease/coronavirus/Pages/Coronavirus.aspx">Pennsylvania Dept of Health</a> website.<br/>'
+        print(phase_data, file=phpout)
 
 # Make state row
-state = [x for x in files if x.startswith(f'{statename}_State')]
-makerow([f'{statename}', '', ''], dir, state, output)
+statefiles = [x for x in files if x.startswith(f'{statename}_State')]
+(state, region, county) = (statename, '', '')
+makerow([state, region, county], statedir, statefiles, output)
 
 # Get counties
 counties = [f for f in files if '_County_' in f]
@@ -96,14 +135,24 @@ rgx = re.compile(r'^(.*?)_Region_.*.png$')
 for i in range(0, len(regionfiles), 3):
     match = rgx.search(regionfiles[i])
     region = match.group(1)
-    makerow([f'{statename}', region, ''], dir, regionfiles[i:i+3], output)
+    (state, county) = (statename, '')
+    print(region)
+    if region == 'New_York_City':
+        region = 'New York City<BR/>(all boroughs)'
+
+    makerow([state, region, county], dir, regionfiles[i:i+3], output)
 
     # Make country rows in the correct regions, if possible
-    for county in sorted(regions[region]):
-        countyfiles = data[county]
-        match = county_rgx.search(countyfiles[0])
-        makerow([f'{statename}', region, match.group(1)], dir, countyfiles, output)
-        data.pop(county)
+    for county in sorted(regions[region.replace('_', ' ')]):
+        county = county.replace(' ', '_')
+        if statename == 'New_York' and county in ['Bronx', 'Queens', 'New_York_City', 'New_York', 'Kings', 'Richmond']:
+            pass
+        else:
+            countyfiles = data[county]
+            match = county_rgx.search(countyfiles[0])
+            countyname = match.group(1)
+            makerow([f'{statename}', region, countyname], dir, countyfiles, output)
+            data.pop(county)
 
 # Make country rows that weren't in regions
 for county in sorted(data.keys()):
