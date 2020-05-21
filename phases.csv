@@ -1,68 +1,131 @@
-County,Region,Phase,Effective_Date
-Adams,South Central,yellow,5/22/20
-Allegheny,South West,yellow,5/15/20
-Armstrong,South West,yellow,5/15/20
-Beaver,South West,yellow,5/22/20
-Bedford,South Central,yellow,5/15/20
-Berks,South East,red,4/22/20
-Blair,South Central,yellow,5/15/20
-Bradford,North Central,yellow,5/8/20
-Bucks,South East,red,4/22/20
-Butler,South West,yellow,5/15/20
-Cambria,South West,yellow,5/15/20
-Cameron,North West,yellow,5/8/20
-Carbon,North East,yellow,5/22/20
-Centre,North Central,yellow,5/8/20
-Chester,South East,red,4/22/20
-Clarion,North West,yellow,5/8/20
-Clearfield,North West,yellow,5/8/20
-Clinton,North Central,yellow,5/8/20
-Columbia,North Central,yellow,5/22/20
-Crawford,North West,yellow,5/8/20
-Cumberland,South Central,yellow,5/22/20
-Dauphin,South Central,red,4/22/20
-Delaware,South East,red,4/22/20
-Elk,North West,yellow,5/8/20
-Erie,North West,yellow,5/8/20
-Fayette,South West,yellow,5/15/20
-Forest,North West,yellow,5/8/20
-Franklin,South Central,red,4/22/20
-Fulton,South Central,yellow,5/15/20
-Greene,South West,yellow,5/15/20
-Huntingdon,South Central,red,4/22/20
-Indiana,South West,yellow,5/15/20
-Jefferson,North West,yellow,5/8/20
-Juniata,South Central,yellow,5/22/20
-Lackawanna,North East,red,4/22/20
-Lancaster,South East,red,4/22/20
-Lawrence,North West,yellow,5/8/20
-Lebanon,South Central,red,4/22/20
-Lehigh,North East,red,4/22/20
-Luzerne,North East,red,4/22/20
-Lycoming,North Central,yellow,5/8/20
-McKean,North West,yellow,5/8/20
-Mercer,North West,yellow,5/8/20
-Mifflin,South Central,yellow,5/22/20
-Monroe,North East,red,4/22/20
-Montgomery,South East,red,4/22/20
-Montour,North Central,yellow,5/8/20
-Northampton,North East,red,4/22/20
-Northumberland,North Central,yellow,5/8/20
-Perry,South Central,yellow,5/22/20
-Philadelphia,South East,red,4/22/20
-Pike,North East,red,4/22/20
-Potter,North Central,yellow,5/8/20
-Schuylkill,South East,red,4/22/20
-Snyder,North Central,yellow,5/8/20
-Somerset,South West,yellow,5/15/20
-Sullivan,North Central,yellow,5/8/20
-Susquehanna,North East,yellow,5/22/20
-Tioga,North Central,yellow,5/8/20
-Union,North Central,yellow,5/8/20
-Venango,North West,yellow,5/8/20
-Warren,North West,yellow,5/8/20
-Washington,South West,yellow,5/15/20
-Wayne,North East,yellow,5/22/20
-Westmoreland,South West,yellow,5/15/20
-Wyoming,North East,yellow,5/22/20
-York,South Central,yellow,5/22/20
+County,State,Region,Phase,Effective_Date
+Adams,Pennsylvania,South Central,yellow,5/22/20
+Allegheny,Pennsylvania,South West,yellow,5/15/20
+Armstrong,Pennsylvania,South West,yellow,5/15/20
+Beaver,Pennsylvania,South West,yellow,5/22/20
+Bedford,Pennsylvania,South Central,yellow,5/15/20
+Berks,Pennsylvania,South East,red,4/22/20
+Blair,Pennsylvania,South Central,yellow,5/15/20
+Bradford,Pennsylvania,North Central,yellow,5/8/20
+Bucks,Pennsylvania,South East,red,4/22/20
+Butler,Pennsylvania,South West,yellow,5/15/20
+Cambria,Pennsylvania,South West,yellow,5/15/20
+Cameron,Pennsylvania,North West,yellow,5/8/20
+Carbon,Pennsylvania,North East,yellow,5/22/20
+Centre,Pennsylvania,North Central,yellow,5/8/20
+Chester,Pennsylvania,South East,red,4/22/20
+Clarion,Pennsylvania,North West,yellow,5/8/20
+Clearfield,Pennsylvania,North West,yellow,5/8/20
+Clinton,Pennsylvania,North Central,yellow,5/8/20
+Columbia,Pennsylvania,North Central,yellow,5/22/20
+Crawford,Pennsylvania,North West,yellow,5/8/20
+Cumberland,Pennsylvania,South Central,yellow,5/22/20
+Dauphin,Pennsylvania,South Central,red,4/22/20
+Delaware,Pennsylvania,South East,red,4/22/20
+Elk,Pennsylvania,North West,yellow,5/8/20
+Erie,Pennsylvania,North West,yellow,5/8/20
+Fayette,Pennsylvania,South West,yellow,5/15/20
+Forest,Pennsylvania,North West,yellow,5/8/20
+Franklin,Pennsylvania,South Central,red,4/22/20
+Fulton,Pennsylvania,South Central,yellow,5/15/20
+Greene,Pennsylvania,South West,yellow,5/15/20
+Huntingdon,Pennsylvania,South Central,red,4/22/20
+Indiana,Pennsylvania,South West,yellow,5/15/20
+Jefferson,Pennsylvania,North West,yellow,5/8/20
+Juniata,Pennsylvania,South Central,yellow,5/22/20
+Lackawanna,Pennsylvania,North East,red,4/22/20
+Lancaster,Pennsylvania,South East,red,4/22/20
+Lawrence,Pennsylvania,North West,yellow,5/8/20
+Lebanon,Pennsylvania,South Central,red,4/22/20
+Lehigh,Pennsylvania,North East,red,4/22/20
+Luzerne,Pennsylvania,North East,red,4/22/20
+Lycoming,Pennsylvania,North Central,yellow,5/8/20
+McKean,Pennsylvania,North West,yellow,5/8/20
+Mercer,Pennsylvania,North West,yellow,5/8/20
+Mifflin,Pennsylvania,South Central,yellow,5/22/20
+Monroe,Pennsylvania,North East,red,4/22/20
+Montgomery,Pennsylvania,South East,red,4/22/20
+Montour,Pennsylvania,North Central,yellow,5/8/20
+Northampton,Pennsylvania,North East,red,4/22/20
+Northumberland,Pennsylvania,North Central,yellow,5/8/20
+Perry,Pennsylvania,South Central,yellow,5/22/20
+Philadelphia,Pennsylvania,South East,red,4/22/20
+Pike,Pennsylvania,North East,red,4/22/20
+Potter,Pennsylvania,North Central,yellow,5/8/20
+Schuylkill,Pennsylvania,South East,red,4/22/20
+Snyder,Pennsylvania,North Central,yellow,5/8/20
+Somerset,Pennsylvania,South West,yellow,5/15/20
+Sullivan,Pennsylvania,North Central,yellow,5/8/20
+Susquehanna,Pennsylvania,North East,yellow,5/22/20
+Tioga,Pennsylvania,North Central,yellow,5/8/20
+Union,Pennsylvania,North Central,yellow,5/8/20
+Venango,Pennsylvania,North West,yellow,5/8/20
+Warren,Pennsylvania,North West,yellow,5/8/20
+Washington,Pennsylvania,South West,yellow,5/15/20
+Wayne,Pennsylvania,North East,yellow,5/22/20
+Westmoreland,Pennsylvania,South West,yellow,5/15/20
+Wyoming,Pennsylvania,North East,yellow,5/22/20
+York,Pennsylvania,South Central,yellow,5/22/20
+Albany,New York,Capital,green,5/20/20
+Columbia,New York,Capital,green,5/20/20
+Greene,New York,Capital,green,5/20/20
+Rensselaer,New York,Capital,green,5/20/20
+Saratoga,New York,Capital,green,5/20/20
+Schenectady,New York,Capital,green,5/20/20
+Warren,New York,Capital,green,5/20/20
+Washington,New York,Capital,green,5/20/20
+Cayuga,New York,Central New York,green,5/20/20
+Cortland,New York,Central New York,green,5/20/20
+Madison,New York,Central New York,green,5/20/20
+Onondaga,New York,Central New York,green,5/20/20
+Oswego,New York,Central New York,green,5/20/20
+Genesee,New York,Finger Lakes,green,5/20/20
+Livingston,New York,Finger Lakes,green,5/20/20
+Monroe,New York,Finger Lakes,green,5/20/20
+Ontario,New York,Finger Lakes,green,5/20/20
+Orleans,New York,Finger Lakes,green,5/20/20
+Seneca,New York,Finger Lakes,green,5/20/20
+Wayne,New York,Finger Lakes,green,5/20/20
+Wyoming,New York,Finger Lakes,green,5/20/20
+Yates,New York,Finger Lakes,green,5/20/20
+Nassau,New York,Long Island,red,5/20/20
+Suffolk,New York,Long Island,red,5/20/20
+Dutchess,New York,Mid-Hudson,red,5/20/20
+Orange,New York,Mid-Hudson,red,5/20/20
+Putnam,New York,Mid-Hudson,red,5/20/20
+Rockland,New York,Mid-Hudson,red,5/20/20
+Sullivan,New York,Mid-Hudson,red,5/20/20
+Ulster,New York,Mid-Hudson,red,5/20/20
+Westchester,New York,Mid-Hudson,red,5/20/20
+Fulton,New York,Mohawk Valley,green,5/20/20
+Herkimer,New York,Mohawk Valley,green,5/20/20
+Montgomery,New York,Mohawk Valley,green,5/20/20
+Oneida,New York,Mohawk Valley,green,5/20/20
+Otsego,New York,Mohawk Valley,green,5/20/20
+Schoharie,New York,Mohawk Valley,green,5/20/20
+Bronx,New York,New York City,red,5/20/20
+Kings,New York,New York City,red,5/20/20
+New York,New York,New York City,red,5/20/20
+New York City,New York,New York City,red,5/20/20
+Queens,New York,New York City,red,5/20/20
+Richmond,New York,New York City,red,5/20/20
+Clinton,New York,North Country,green,5/20/20
+Essex,New York,North Country,green,5/20/20
+Franklin,New York,North Country,green,5/20/20
+Hamilton,New York,North Country,green,5/20/20
+Jefferson,New York,North Country,green,5/20/20
+Lewis,New York,North Country,green,5/20/20
+St. Lawrence,New York,North Country,green,5/20/20
+Broome,New York,Southern Tier,green,5/20/20
+Chemung,New York,Southern Tier,green,5/20/20
+Chenango,New York,Southern Tier,green,5/20/20
+Delaware,New York,Southern Tier,green,5/20/20
+Schuyler,New York,Southern Tier,green,5/20/20
+Steuben,New York,Southern Tier,green,5/20/20
+Tioga,New York,Southern Tier,green,5/20/20
+Tompkins,New York,Southern Tier,green,5/20/20
+Allegany,New York,Western New York,green,5/20/20
+Cattaraugus,New York,Western New York,green,5/20/20
+Chautauqua,New York,Western New York,green,5/20/20
+Erie,New York,Western New York,green,5/20/20
+Niagara,New York,Western New York,green,5/20/20
