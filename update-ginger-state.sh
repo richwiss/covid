@@ -13,12 +13,18 @@ git pull
 cd -
 
 # convert script
-jupyter nbconvert --to script plots.ipynb
+# jupyter nbconvert --to script plots.ipynb
+
+if [ -z ${1+x} ]; then
+    echo "Usage: update... <STATE_NAME>"
+    exit -1
+fi
 
 state=$1
+
 if [ "states/$state/index.php" -ot "COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv" ]; then
     sstate=$(echo $state | perl -pe 's/_/ /g;')
-    STATEPLOT="$sstate" ipython3 plots.py
+    STATEPLOT="$sstate" ipython3 plots.ipynb
     python3 make_table.py -s "$state"
     chmod -R a+rX states/"$state"
 fi
