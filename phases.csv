@@ -4,16 +4,16 @@ Allegheny,Pennsylvania,South West,green,6/5/20
 Armstrong,Pennsylvania,South West,green,6/5/20
 Beaver,Pennsylvania,South West,yellow,5/22/20
 Bedford,Pennsylvania,South Central,green,6/5/20
-Berks,Pennsylvania,South East,red,4/22/20
+Berks,Pennsylvania,South East,yellow,6/5/20
 Blair,Pennsylvania,South Central,green,6/5/20
 Bradford,Pennsylvania,North Central,green,5/29/20
-Bucks,Pennsylvania,South East,red,4/22/20
+Bucks,Pennsylvania,South East,yellow,6/5/20
 Butler,Pennsylvania,South West,green,6/5/20
 Cambria,Pennsylvania,South West,green,6/5/20
 Cameron,Pennsylvania,North West,green,5/29/20
 Carbon,Pennsylvania,North East,yellow,5/22/20
 Centre,Pennsylvania,North Central,yellow,5/8/20
-Chester,Pennsylvania,South East,red,4/22/20
+Chester,Pennsylvania,South East,yellow,6/5/20
 Clarion,Pennsylvania,North West,green,5/29/20
 Clearfield,Pennsylvania,North West,green,5/29/20
 Clinton,Pennsylvania,North Central,green,6/5/20
@@ -21,7 +21,7 @@ Columbia,Pennsylvania,North Central,yellow,5/22/20
 Crawford,Pennsylvania,North West,green,5/29/20
 Cumberland,Pennsylvania,South Central,yellow,5/22/20
 Dauphin,Pennsylvania,South Central,yellow,5/29/20
-Delaware,Pennsylvania,South East,red,4/22/20
+Delaware,Pennsylvania,South East,yellow,6/5/20
 Elk,Pennsylvania,North West,green,5/29/20
 Erie,Pennsylvania,North West,yellow,5/8/20
 Fayette,Pennsylvania,South West,green,6/5/20
@@ -33,23 +33,23 @@ Huntingdon,Pennsylvania,South Central,yellow,5/29/20
 Indiana,Pennsylvania,South West,green,6/5/20
 Jefferson,Pennsylvania,North West,green,5/29/20
 Juniata,Pennsylvania,South Central,yellow,5/22/20
-Lackawanna,Pennsylvania,North East,red,4/22/20
-Lancaster,Pennsylvania,South East,red,4/22/20
+Lackawanna,Pennsylvania,North East,yellow,6/5/20
+Lancaster,Pennsylvania,South East,yellow,6/5/20
 Lawrence,Pennsylvania,North West,green,5/29/20
 Lebanon,Pennsylvania,South Central,yellow,5/29/20
-Lehigh,Pennsylvania,North East,red,4/22/20
+Lehigh,Pennsylvania,North East,yellow,6/5/20
 Luzerne,Pennsylvania,North East,yellow,5/29/20
 Lycoming,Pennsylvania,North Central,green,6/5/20
 McKean,Pennsylvania,North West,green,5/29/20
 Mercer,Pennsylvania,North West,green,6/5/20
 Mifflin,Pennsylvania,South Central,yellow,5/22/20
 Monroe,Pennsylvania,North East,yellow,5/29/20
-Montgomery,Pennsylvania,South East,red,4/22/20
+Montgomery,Pennsylvania,South East,yellow,6/5/20
 Montour,Pennsylvania,North Central,green,5/29/20
-Northampton,Pennsylvania,North East,red,4/22/20
+Northampton,Pennsylvania,North East,yellow,6/5/20
 Northumberland,Pennsylvania,North Central,yellow,5/8/20
 Perry,Pennsylvania,South Central,yellow,5/22/20
-Philadelphia,Pennsylvania,South East,red,4/22/20
+Philadelphia,Pennsylvania,South East,yellow,6/5/20
 Pike,Pennsylvania,North East,yellow,5/29/20
 Potter,Pennsylvania,North Central,green,5/29/20
 Schuylkill,Pennsylvania,South East,yellow,5/29/20
@@ -88,15 +88,15 @@ Seneca,New York,Finger Lakes,green,5/20/20
 Wayne,New York,Finger Lakes,green,5/20/20
 Wyoming,New York,Finger Lakes,green,5/20/20
 Yates,New York,Finger Lakes,green,5/20/20
-Nassau,New York,Long Island,red,5/20/20
-Suffolk,New York,Long Island,red,5/20/20
-Dutchess,New York,Mid-Hudson,red,5/20/20
-Orange,New York,Mid-Hudson,red,5/20/20
-Putnam,New York,Mid-Hudson,red,5/20/20
-Rockland,New York,Mid-Hudson,red,5/20/20
-Sullivan,New York,Mid-Hudson,red,5/20/20
-Ulster,New York,Mid-Hudson,red,5/20/20
-Westchester,New York,Mid-Hudson,red,5/20/20
+Nassau,New York,Long Island,yellow,6/3/20
+Suffolk,New York,Long Island,yellow,6/3/20
+Dutchess,New York,Mid-Hudson,green,6/3/20
+Orange,New York,Mid-Hudson,green,6/3/20
+Putnam,New York,Mid-Hudson,green,6/3/20
+Rockland,New York,Mid-Hudson,green,6/3/20
+Sullivan,New York,Mid-Hudson,green,6/3/20
+Ulster,New York,Mid-Hudson,green,6/3/20
+Westchester,New York,Mid-Hudson,green,6/3/20
 Fulton,New York,Mohawk Valley,green,5/20/20
 Herkimer,New York,Mohawk Valley,green,5/20/20
 Montgomery,New York,Mohawk Valley,green,5/20/20
