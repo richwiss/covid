@@ -16,6 +16,10 @@ plots.nbconvert.ipynb
 plots.py
 error.txt
 .DS_Store
+#generated chesco
+chesco/data/*.csv
+chesco/data/*.txt
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
