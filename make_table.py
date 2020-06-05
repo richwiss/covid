@@ -26,9 +26,10 @@ def makerow(labels, directory, files, out):
     f1, f2, f3 = [name for name in files]
     labels = [label.replace('_',' ') for label in labels]
     county = labels[2]
+    #if county == 'New_York_City':
+    #    print(f'PHASE: {phases[county]}')
     if county in phases:
         phase = phases[county]
-        #tdcolor = f'<td class="{phase.color}">'
         edate = phase.effective_date.strftime('%m/%d/%Y')
         emoji = f'<BR /><div style="font-size: 75%;">{phase.emoji} {edate}</div>'
     else:
@@ -137,9 +138,9 @@ for i in range(0, len(regionfiles), 3):
     match = rgx.search(regionfiles[i])
     region = match.group(1)
     (state, county) = (statename, '')
-    print(region)
     if region == 'New_York_City':
         region = 'New York City<BR/>(all boroughs)'
+        county = 'New York City'
 
     makerow([state, region, county], dir, regionfiles[i:i+3], output)
 
