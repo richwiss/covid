@@ -7,7 +7,7 @@
     <h1>Covid-19 Graphs</h1>
     <h4>
       <p>Data updated:  <?php
-			  echo date('l F d, Y \a\t H:i:s', filemtime("/home/richardw/Dropbox/covid/COVID-19/csse_covid_19_data/csse_covid_19_daily_reports")); ?>
+			  echo date('l F d, Y \a\t H:i:s', filemtime("/home/richardw/Dropbox/covid/COVID-19/csse_covid_19_data/csse_covid_19_time_series/")); ?>
       </p>
       <p>Table updated:  <?php
 			  echo date('l F d, Y \a\t H:i:s', filemtime("index.php")); ?>
