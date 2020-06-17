@@ -1,10 +1,10 @@
 <html>
   <head>
-    <title>Covid-19 Graphs</title>   
+    <title>PAGE_TITLE</title>   
     <link rel="stylesheet" type="text/css" href="../../mystyle.css">
   </head>
   <body>
-    <h1>Covid-19 Graphs</h1>
+    <h1>PAGE_TITLE</h1>
     <table class="serif">
       <thead>
         <tr>
@@ -17,7 +17,7 @@
         </tr>
       </thead>
       <tbody>
-        <?php include 'table.html';?>
+        <?php include 'TABLE_HTML';?>
       </tbody>
     </table>
 
@@ -28,9 +28,10 @@
 			   echo date('l F d, Y \a\t H:i:s', filemtime("index.php")); ?>
       </p>	
       <p>
-	Data from the <a href="https://github.com/CSSEGISandData/COVID-19">JHU CSSE COVID-19 Dataset</a> and the <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html">US Census Bureau</a>.<BR />
-      Source code and data available from <a href="https://github.com/richwiss/covid">github</a>. Pull requests and comments welcome.<BR /> 
-	Created by <a href="https://twitter.com/richwiss/">@richwiss</a>
+Data from the <a href="https://github.com/CSSEGISandData/COVID-19">JHU CSSE COVID-19 Dataset</a> and the <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html">US Census Bureau</a>.<BR />
+FOOTER_INFO
+Source code and data available from <a href="https://github.com/richwiss/covid">github</a>. Pull requests and comments welcome.<BR /> 
+Created by <a href="https://twitter.com/richwiss/">@richwiss</a>
       </p>
     </h4>
     <h4>
