@@ -7,23 +7,6 @@ from datetime import date
 from collections import defaultdict
 import argparse
 
-class Phase(object):
-    def __init__(self, color, effective_date):
-        assert color in ['red', 'yellow', 'green']
-        self.color = color
-        self.effective_date = effective_date
-        if self.color == 'red':
-            self.emoji='🔴'
-        elif self.color == 'yellow':
-            self.emoji='🟡'
-        elif self.color == 'green':
-            self.emoji='🟢'
-        elif self.color == 'blue':
-            self.emoji='🔵'
-
-    def __repr__(self):
-        return f'Phase({self.color}, "{self.effective_date}")'
-
 def make_row(state, statefiles, out):
     f1, f2, f3 = [name for name in statefiles if name.endswith('.png')]
 
