@@ -29,3 +29,8 @@ for state in Pennsylvania Florida Georgia New_Jersey New_York California North_C
     fi
 done
 
+if [ "states/index.php" -ot "COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv" ]; then
+    python3 make_table_states.py
+    chmod a+rX states/*.php states/*.html
+fi
+
