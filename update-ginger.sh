@@ -20,7 +20,8 @@ for state in Pennsylvania Florida Georgia New_Jersey New_York California North_C
         #TIMESTART=$(date +%s.%N)
         sstate=$(echo $state | perl -pe 's/_/ /g;')
         STATEPLOT="$sstate" ipython3 plots.ipynb
-        python3 make_table.py -s "$state"
+        python3 make_table_plotly.py -s "$state"
+	cp web/graphs.php states/"$state"/graphs.php
         chmod -R a+rX states/"$state"
         #TIMEEND=$(date +%s.%N)
         #DURATION=$(echo "( $TIMEEND - $TIMESTART )" | bc -l ) 
