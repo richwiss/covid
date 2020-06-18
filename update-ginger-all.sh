@@ -12,7 +12,6 @@ cd COVID-19
 git pull
 cd -
 
-date >> log
 # create new graphs
 STATEPLOT="ALL" ipython3 plots.ipynb
 
