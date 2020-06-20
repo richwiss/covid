@@ -86,6 +86,11 @@ def get_png_files(statedir):
     files=sorted(os.listdir(statedir))
     return files
 
+coviddir = os.environ.get('COVIDDIR', None)
+if not coviddir:
+    coviddir = '~/Desktop/covid'
+statedir = f'{coviddir}/states'    
+
 # Choose the state
 parser = argparse.ArgumentParser(description='Make an HTML table for a state.')
 parser.add_argument("-s", "--state", required=True, help="state name")
@@ -97,15 +102,15 @@ regions = load_regions(statename)
 phases = load_phases(statename)
 
 # Get list of PNG files
-statedir=f'states/{statename}'
+statedir=f'{statedir}/{statename}'
 files = get_png_files(statedir)
 
 # Setup output directories
 tableout=f'{statename}_table.html'
-output=open(f'states/{statename}/{tableout}', 'w')
+output=open(f'{statedir}/{statename}/{tableout}', 'w')
 
 # create index for the state
-phpout=open(f'states/{statename}/index.php', 'w')
+phpout=open(f'{statedir}/{statename}/index.php', 'w')
 
 for line in open('web/index.php'):
     line = re.sub(r"'table.html'", f"'{tableout}'", line)

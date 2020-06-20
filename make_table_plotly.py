@@ -124,14 +124,19 @@ def main():
     has_regions = (len(regions) > 0)
 
     # Get list of PNG files
-    statedir=pathlib.Path(f'states/{statename}')
+    coviddir = os.environ.get('COVIDDIR', None)
+    if not coviddir:
+        coviddir = '~/Desktop/covid'
+    statedir = f'{coviddir}/states'
+            
+    statedirlocal=pathlib.Path(f'{statedir}/{statename}')
     suffixes = ['_trend', '_yellow_target', '_new_cases']
-    files = get_files(statedir, extension='png', suffixes=suffixes)
+    files = get_files(statedirlocal, extension='png', suffixes=suffixes)
     assert len(files) % len(suffixes) == 0
 
     # Setup output directories
     tableout=f'{statename}_table.html'
-    output=open(f'states/{statename}/{tableout}', 'w')
+    output=open(f'{statedir}/{statename}/{tableout}', 'w')
 
     county_rgx = re.compile(r'(<th>)County(</th>)')
     footer = defaultdict(str)
@@ -139,7 +144,7 @@ def main():
     footer['Pennsylvania'] = 'Region status from the <a href="https://www.health.pa.gov/topics/disease/coronavirus/Pages/Coronavirus.aspx">Pennsylvania Dept of Health</a> website.<br/>'
 
     # Create index.php for the state by using the template
-    phpout=open(f'states/{statename}/index.php', 'w')
+    phpout=open(f'{statedir}/{statename}/index.php', 'w')
     for line in open(template):
         statedisplay = statename.replace('_',' ')
         line = re.sub(r"TABLE_HTML", f"{tableout}", line)
@@ -156,7 +161,7 @@ def main():
     # Make state row
     statefiles = [x for x in files if x.startswith(f'{statename}_State')]
     (state, region, county) = (statename, '', '')
-    make_row([state, region, county], statedir, statefiles, output, phases, has_regions)
+    make_row([state, region, county], statedirlocal, statefiles, output, phases, has_regions)
 
     # Get the images for the counties so we can insert into regions as we go
     county_files = [f for f in files if '_County_' in f]

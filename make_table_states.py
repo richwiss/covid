@@ -26,6 +26,11 @@ def make_row(state, statefiles, out):
 
 def main():
 
+    coviddir = os.environ.get('COVIDDIR', None)
+    if not coviddir:
+        coviddir = '~/Desktop/covid'
+    statedir = f'{coviddir}/states'
+
     # Get the name of the state from the command-line arguments
     parser = argparse.ArgumentParser(description='Make an HTML table for all states.')
     parser.add_argument("-t", "--template", default="web/sindex.php", help="template for the table")
@@ -33,7 +38,7 @@ def main():
     template = args.template
 
     # Get list of PNG files
-    statedir=pathlib.Path(f'states/')
+    statedir=pathlib.Path(f'{statedir}/')
     suffixes = ['_trend', '_yellow_target', '_new_cases']
     endings = [f'{suffix}.png' for suffix in suffixes]
 
@@ -53,10 +58,10 @@ def main():
 
     # Setup output directories
     tableout=f'table.html'
-    output=open(f'states/{tableout}', 'w')
+    output=open(f'{statedir}/{tableout}', 'w')
 
     # Create index.php for the state by using the template
-    phpout=open(f'states/index.php', 'w')
+    phpout=open(f'{statedir}/index.php', 'w')
     for line in open(template):
         line = re.sub(r"TABLE_HTML", f"{tableout}", line)
         line = re.sub(r'PAGE_TITLE', f'SARS-CoV-2: USA', line) 
