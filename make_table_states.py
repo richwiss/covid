@@ -8,7 +8,9 @@ from collections import defaultdict
 import argparse
 
 def make_row(state, statefiles, out):
-    f1, f2, f3 = [name for name in statefiles if name.endswith('.png')]
+    pngs = [name for name in statefiles if name.endswith('.png')]
+    assert len(pngs) == 3
+    f1, f2, f3 = pngs
 
     statename = state.replace('_',' ')
     location = f'{state}/{state}_State'
@@ -28,7 +30,8 @@ def main():
 
     coviddir = os.environ.get('COVIDDIR', None)
     if not coviddir:
-        coviddir = '~/Desktop/covid'
+        home = os.environ.get('COVIDDIR', '.') # fallback to cwd
+        coviddir = f'{home}/Desktop/covid'
     statedir = f'{coviddir}/states'
 
     # Get the name of the state from the command-line arguments
@@ -41,7 +44,6 @@ def main():
     statedir=pathlib.Path(f'{statedir}/')
     suffixes = ['_trend', '_yellow_target', '_new_cases']
     endings = [f'{suffix}.png' for suffix in suffixes]
-
     states = [path.name for path in statedir.iterdir() if path.is_dir()]
     all_files = {}
     for state in states:
