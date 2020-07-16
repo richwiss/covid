@@ -7,16 +7,12 @@ png/
 # generated table data
 web/table.html
 # directories
-states/
-staging/
-map/
 covidtracking/
 #misc
 error.txt
 .DS_Store
 #generated chesco
-chesco/data/*.csv
-chesco/data/*.txt
+local/chesco/*.txt
 
 
 # Byte-compiled / optimized / DLL files
