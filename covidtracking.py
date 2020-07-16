@@ -1,6 +1,10 @@
+import pandas as pd
+import seaborn as sns
+import numpy as np
+from matplotlib import pyplot as plt
+from plots_pylab import limit_xticks
+
 # # Covid Tracking
-# #### Requires: imports from above as well as limit_xticks() function
-"""
 abbrevs = {'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California', 
            'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'DC': 'District of Columbia', 
            'FL': 'Florida', 'GA': 'Georgia', 'HI': 'Hawaii', 'ID': 'Idaho', 'IL': 'Illinois', 
@@ -13,9 +17,6 @@ abbrevs = {'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', '
            'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah', 'VT': 'Vermont', 
            'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia', 'WI': 'Wisconsin', 'WY': 'Wyoming'}
 rabbrevs = dict([(v,k) for (k,v) in abbrevs.items()])
-"""
-
-
 
 
 def get_covidtracking():
@@ -118,7 +119,7 @@ def ptr_plus(df, label, window=7, mindate="2020-04-01", output=None):
     ymax = max(0.5, max(df.daily_positive_rate_7))
     t.set_ylim(0, ymax)
     
-    leg = t.legend(loc='best', frameon=False)
+    t.legend(loc='best', frameon=False)
 
     if output == 'inline':
         plt.show()
@@ -127,15 +128,8 @@ def ptr_plus(df, label, window=7, mindate="2020-04-01", output=None):
         plt.savefig(output, bbox_inches='tight')
     
 
-#state = 'Oregon'
-#ct_df = get_covidtracking()
-#state_df = filter_covidtracking(ct_df, rabbrevs[state])
-#augment_covidtracking(state_df)
-#ptr_plus(state_df, state, output='inline')
-
-
-
-
-
-
-
+state = 'Texas'
+ct_df = get_covidtracking()
+state_df = filter_covidtracking(ct_df, rabbrevs[state])
+augment_covidtracking(state_df)
+ptr_plus(state_df, state, output='inline')
