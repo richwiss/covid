@@ -2,7 +2,7 @@
 
 The initial version of these tools helps visualize Pennsylvania's progress towards controlling SARS-CoV-2, the virus that causes COVID-19 (Coronavirus disease 2019).
 
-The included Jupyter notebook requires numerous Python libraries: `pandas`, `matplotlib`, `seaborn`, `numpy`, and `tqdm`.
+The included python program requires numerous Python libraries: `pandas`, `matplotlib`, `seaborn`, `numpy`, and `tqdm`. (TODO: `requirements.txt`)
 
 Sources:
 * Pennsylvania-specific region designations come from [Governor Tom Wolf's Process to Reopen Pennsylvania](https://www.governor.pa.gov/process-to-reopen-pennsylvania/). A [copy of the relevant map](resources/20200423-Bureau-Community-Health-Systems-Regional-Map-Opt.png) is available in this project.
