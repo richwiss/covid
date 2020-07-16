@@ -1,18 +1,11 @@
 # JHU COVID DATA
 COVID-19/
-# old things
-old/
-# png files
-png/
-# generated table data
-web/table.html
-# directories
+# data directories
 covidtracking/
-#misc
-error.txt
-.DS_Store
 #generated chesco
 local/chesco/*.txt
+#misc
+.DS_Store
 
 
 # Byte-compiled / optimized / DLL files
