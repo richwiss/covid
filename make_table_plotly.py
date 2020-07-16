@@ -140,7 +140,7 @@ def main():
 
     county_rgx = re.compile(r'(<th>)County(</th>)')
     footer = defaultdict(str)
-    footer['New_York'] = 'Region status from the <a href="https://forward.ny.gov/regional-monitoring-dashboard">New York regional monitoring</a> website.<br/>'
+    footer['New_York'] = 'Region status from the <a href="https://forward.ny.gov">New York regional monitoring</a> website.<br/>'
     footer['Pennsylvania'] = 'Region status from the <a href="https://www.health.pa.gov/topics/disease/coronavirus/Pages/Coronavirus.aspx">Pennsylvania Dept of Health</a> website.<br/>'
 
     # Create index.php for the state by using the template
