@@ -12,4 +12,12 @@ Sources:
 * COVID-19 data comes from the [JHU CSSE COVID-19 Dataset](https://github.com/CSSEGISandData/COVID-19). A local copy of the JHU repository is required by this project.
 
 
-
+Requirements:
+* pandas
+* matplotlib
+* seaborn
+* numpy
+* tqdm
+* plotly
+    * Requires electron, orca
+    * npm install -g electron@6.1.4 orca  (omit -g to install in user directory)
