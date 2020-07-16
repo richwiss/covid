@@ -11,9 +11,7 @@ states/
 staging/
 map/
 covidtracking/
-# converted notebook
-plots.nbconvert.ipynb
-plots.py
+#misc
 error.txt
 .DS_Store
 #generated chesco
