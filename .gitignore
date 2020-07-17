@@ -4,6 +4,7 @@ COVID-19/
 covidtracking/
 #generated chesco
 local/chesco/*.txt
+local/chesco/*.csv
 #misc
 .DS_Store
 
