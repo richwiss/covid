@@ -12,4 +12,4 @@ if [ -z ${1+x} ]; then
     exit -1
 fi
 
-JUPYTER_DATE=$1 ipython3 chesco.ipynb
+python3 chesco.py "$1"
