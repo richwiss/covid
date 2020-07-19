@@ -20,10 +20,11 @@ python3 plots.py --states ALL --graph_directory $COVIDDIR
 #python3 plots.py --states ALL --graph_directory $COVIDDIR --ignore_timestamp
 
 # update tables
-for state in Pennsylvania Florida Georgia New_Jersey New_York California North_Carolina Alabama Alaska Arizona Arkansas Colorado Connecticut Delaware District_of_Columbia Guam Hawaii Idaho Illinois Indiana Iowa Kansas Kentucky Louisiana Maine Maryland Massachusetts Michigan Minnesota Mississippi Missouri Montana Nebraska Nevada New_Hampshire New_Mexico North_Dakota Northern_Mariana_Islands Ohio Oklahoma Oregon  Rhode_Island South_Carolina South_Dakota Tennessee Texas Utah Vermont Virginia Virgin_Islands Washington West_Virginia Wisconsin Wyoming; do
+for state in Pennsylvania Florida Georgia New_Jersey New_York California North_Carolina Alabama Alaska Arizona Arkansas Colorado Connecticut Delaware District_of_Columbia Guam Hawaii Idaho Illinois Indiana Iowa Kansas Kentucky Louisiana Maine Maryland Massachusetts Michigan Minnesota Mississippi Missouri Montana Nebraska Nevada New_Hampshire New_Mexico North_Dakota Northern_Mariana_Islands Ohio Oklahoma Oregon  Rhode_Island South_Carolina South_Dakota Tennessee Texas Utah Vermont Virginia Virgin_Islands Washington West_Virginia Wisconsin Wyoming Puerto_Rico American_Samoa; do
     if [ "${STATEDIR}/${state}/${state}_table.html" -ot "${STATEDIR}/${state}/${state}_State_new_cases.png" ]; then
         python3 make_table_plotly.py -s "$state"
 	cp web/graphs.php ${STATEDIR}/${state}/graphs.php
+	chmod a+rX ${STATEDIR}/${state}
         chmod a+rX ${STATEDIR}/${state}/${state}_table.html 
         chmod a+rX ${STATEDIR}/${state}/index.php 
         chmod a+rX ${STATEDIR}/${state}/graphs.php 

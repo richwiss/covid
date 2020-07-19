@@ -20,7 +20,8 @@
           <td><?php $url = $location . '_yellow_target.html'; include $url;?></td>
        </tr>
        <tr>
-          <td><?php $url = $location . '_trend.html'; include $url;?></          <td></td>
+          <td><?php $url = $location . '_trend.html'; include $url;?></td>
+          <td><?php $url = $location . '_posneg.html'; include $url;?></td>
        </tr>
       </tbody>
     </table>

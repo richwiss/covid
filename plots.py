@@ -23,6 +23,8 @@ import sys
 import argparse
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import covidtracking
+import common
 
 """
 Global variables
@@ -61,7 +63,9 @@ def omit_zero_counties(df):
     rgx = re.compile(r'\d+/\d+/\d+')
     date_cols = [c for c in df.columns if rgx.search(c)]
     last_date = date_cols[-1]
-    filtered = df[df[last_date]>0]
+    #filtered = df[df[last_date]>0]
+    # don't throw away a place with no counties just because it has no cases
+    filtered = df[(df[last_date]>0) | (df['Admin2'].isnull()) ]
     filtered.reset_index(drop=True, inplace=True)
     return filtered
 
@@ -322,7 +326,7 @@ def clip_at_zero_series(df):
             drops.append(c)
         elif sm > 0:
             break
-    if len(drops) < len(df.columns):
+    if len(drops) < len(date_cols):
         df = df.drop(columns=drops)
     return df
 
@@ -341,18 +345,26 @@ def pipeline_helper(df, label, output, output_directory, use_plotly=True):
     else:
         output = 'inline'
 
+    has_covidtracking = ('positive' in df.columns)
+
     days = 14
     centered = False
     daily_new_cases(df) # add a new_cases column to the dataframe for the daily new cases
     average_new_cases(df, days, centered=centered) # adds average new cases in 'day_avg_{days}' column
     trend(df, days) # add slope and trend data
+    if has_covidtracking:
+        ct_days = 7
+        covidtracking.augment(df, window=ct_days) # overwrite window value?
+
 
     if use_plotly:
-        from plots_plotly import new_case_plotly, yellow_target_plotly, trending_plotly
+        from plots_plotly import new_case_plotly, yellow_target_plotly, trending_plotly, posNeg_rate_plotly
         pngScale=0.25
         new_case_plotly(df, label, days=days, centered=centered, output=output, pngScale=pngScale)    
         yellow_target_plotly(df, label, output=output, pngScale=pngScale)
         trending_plotly(df, label, output=output, pngScale=pngScale)
+        if has_covidtracking:
+            posNeg_rate_plotly(df, label, days=ct_days, clip_date='2020-03-15', output=output, pngScale=pngScale)
     else:
         from plots_pylab import new_case_plot, yellow_target, trending
         new_case_plot(df, label, days=days, centered=centered, output=output)    
@@ -369,7 +381,7 @@ def pipeline_helper(df, label, output, output_directory, use_plotly=True):
 # Functions to support time series data from JHU
 
 def run_pipeline_series(all_sdf, popdf, query_type, query_state=None, query_region=None, query_county=None, output='inline', 
-                output_directory=None, clip=False, use_plotly=False):
+                output_directory=None, use_plotly=False, covidtracking_df=None):
     """
     Run pipeline on time_series data
     """
@@ -377,10 +389,10 @@ def run_pipeline_series(all_sdf, popdf, query_type, query_state=None, query_regi
     assert output in ['inline', 'png']
 
     df = select_locality_series(all_sdf, popdf, query_type, query_state, query_region, query_county)
+    if query_type == 'State': # check is not None?
+        ct_df = covidtracking.filter_by_state(covidtracking_df, query_state)
+        df = pd.merge(df, ct_df)
     
-    if clip: # should be clipped at state level. probably don't want to clip each county
-        df = clip_at_zero_series(df) # start at the day before the first case
-
     ckset = set(df.Combined_Key.values)
     assert len(ckset) == 1
     label = ckset.pop()
@@ -412,7 +424,8 @@ def movefiles(olddir, newdir, glob='*.png', chmod=None):
 
 ###########################################################################
 #### Generate plots for the state
-def generate_state_plots(coviddir, states, popdf, all_sdf, use_plotly=True, ignore_timestamp=False):
+def generate_state_plots(coviddir, states, popdf, all_sdf, use_plotly=True, ignore_timestamp=False,
+                        covidtracking_df=None):
 
     (statedir, tempdir) = set_outdirs(coviddir)
     generated=[]
@@ -465,7 +478,8 @@ def generate_state_plots(coviddir, states, popdf, all_sdf, use_plotly=True, igno
 
         # STATE
         run_pipeline_series(state_df, popdf, query_type="State", query_state=state, output='png',
-                            output_directory=outpath, use_plotly=use_plotly)
+                            output_directory=outpath, use_plotly=use_plotly, covidtracking_df=covidtracking_df)
+        
 
         if len(generated) > 0:
             print(f'Moving staged files: {state}')
@@ -483,14 +497,7 @@ def generate_state_plots(coviddir, states, popdf, all_sdf, use_plotly=True, igno
 ## Set to all states if necessary
 def set_statelist(states):
     if states == ['ALL']:
-        states = ['Pennsylvania', 'Florida', 'Georgia', 'New Jersey', 'New York', 'California', 'North Carolina', 
-                  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'Colorado', 'Connecticut', 'Delaware', 
-                  'District of Columbia', 'Guam', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 
-                  'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 
-                  'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Mexico', 
-                  'North Dakota', 'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Rhode Island', 
-                  'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 
-                  'Virgin Islands', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
+        states = list(common.state_d.values()) + list(common.territory_d.values())
     return states
 
 ## Set the output directories
@@ -589,9 +596,18 @@ def main():
     annotate_regions(all_sdf, popdf)
     annotate_populations(all_sdf, popdf)
     all_sdf = omit_zero_counties(all_sdf)
+
+    ct_df = covidtracking.get_data(trim=True)
     
+    #for state in common.state_d.values():
+    #ct_days = 7
+    #ct_state_df = covidtracking.filter_by_state(ct_df, common.rstate_d[state])
+    #covidtracking.augment(ct_state_df, window=ct_days)
+    #posNeg_rate_plotly(state_df, label=state, days=ct_days, output='png', pngScale=pngScale)    
+   
     if True:
-        generate_state_plots(coviddir, states, popdf, all_sdf, ignore_timestamp=args['ignore_timestamp'])
+        generate_state_plots(coviddir, states, popdf, all_sdf, ignore_timestamp=args['ignore_timestamp'],
+                            covidtracking_df = ct_df)
 
     #df = one_off(all_sdf, popdf)
     return all_sdf, popdf
@@ -600,6 +616,9 @@ def main():
 
 if __name__ == '__main__':
     (all_sdf, popdf) = main()
+    #query_type='State'
+    #query_state='American Samoa'
+    #df = select_locality_series(all_sdf, popdf, query_type, query_state=query_state)
     #popdf = load_jhu_population_data()
     #all_sdf = get_series_data()
     #annotate_regions(all_sdf, popdf)

@@ -68,10 +68,10 @@ def new_case_plotly(df, label, days=14, centered=False, output=None, pngScale=No
 ########################################
 ## Days trending downward in 14 days
 def trending_plotly(df, label, days=14, output=None, pngScale=None):
-    tfield = f'trend_{days}'
+    #tfield = f'trend_{days}'
     sfield = f'slope_{days}'
 
-    formatted_dates = df['Last_Update'].apply(lambda x: x.strftime('%Y-%m-%d'))
+    #formatted_dates = df['Last_Update'].apply(lambda x: x.strftime('%Y-%m-%d'))
 
     uptrend = df['trend_14']
     downtrend=df['trend_14']-14
@@ -189,3 +189,83 @@ def yellow_target_plotly(df, label, output=None, pngScale=None):
     title = f"New cases over 14 days per 100K residents: {label}"
     write_figure_plotly(fig, output, title, 'yellow_target', pngScale=pngScale)
 
+#####################################################################
+# covidtracking.com graphs
+
+########################################
+## Positive/negative tests and positive test rate
+
+########################################
+## Days trending downward in 14 days
+def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale=None):
+    if clip_date:
+        df = df[df['Last_Update'] > clip_date]
+
+    ptr_field = f'daily_positive_rate_{days}'
+    ptr100_field = df[ptr_field] * 100
+
+    daily_p = df.daily_positive
+    daily_n = df.daily_negative
+
+    total = daily_p + daily_n
+    y_max = max(total)*1.05
+
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+    fig.add_trace(
+        go.Bar(
+            x = df.Last_Update,
+            y = daily_p,
+            name = f'Positive tests',
+            marker_color = 'red',
+            marker_line_width=1,
+            offset=0,
+            hovertemplate = '<b>%{y:8d}</b>',
+        ),
+        secondary_y=False,
+    )
+    
+    fig.add_trace(
+        go.Bar(
+            x = df.Last_Update,
+            y = daily_n,
+            name = f'Negative tests',
+            marker_color = 'green',
+            marker_line_width=1,
+            offset=0,
+            hovertemplate = '<b>%{y:8d}</b>',
+        ),
+        secondary_y=False,
+    )
+
+    fig.update_layout(barmode='stack')
+
+    fig.add_trace(
+        go.Scatter(
+            x = df.Last_Update,
+            y = ptr100_field,
+            name = f'{days}-day positive test rate',
+            line_color='black',
+            hovertemplate = '<b>%{y:.1f}%</b>',
+        ),
+        secondary_y=True,
+    )
+
+    layout = go.Layout(
+        showlegend=False,  # updated for inline and html
+        xaxis_title="Date",
+        yaxis_title=f"Tests",
+        font=dict(
+            size=12,
+            color="#7f7f7f"
+        ),
+        hovermode="x unified",
+
+        yaxis = {'range': [0, y_max]},
+        yaxis2= {'range': [0,100]}
+    )
+
+    fig.update_layout(layout)
+    
+    title=f"Test results (covidtracking.com): {label}"
+    write_figure_plotly(fig, output, title, 'posneg', pngScale=pngScale)

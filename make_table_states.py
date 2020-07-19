@@ -9,19 +9,21 @@ import argparse
 
 def make_row(state, statefiles, out):
     pngs = [name for name in statefiles if name.endswith('.png')]
-    assert len(pngs) == 3
-    f1, f2, f3 = pngs
+    #print(pngs)
+    assert len(pngs) == 4
+    f1, f2, f3, f4 = pngs
 
     statename = state.replace('_',' ')
-    location = f'{state}/{state}_State'
-    plotly_page = f'graphs.php?location={location}'
+    location = f'{state}_State'
+    plotly_page = f'{state}/graphs.php?location={location}'
 
     print(f"""
     <tr>
         <td><a href="/covid/states/{state}">{statename}</a></td>
         <td><a href="{plotly_page}"><img src="{state}/{f1}" style="width: 55vw; max-width: 100px;"></a></td>
-        <td><a href="{plotly_page}"><img src="{state}/{f2}" style="width: 55vw; max-width: 100px;"></a></td>
         <td><a href="{plotly_page}"><img src="{state}/{f3}" style="width: 55vw; max-width: 100px;"></a></td>
+        <td><a href="{plotly_page}"><img src="{state}/{f4}" style="width: 55vw; max-width: 100px;"></a></td>
+        <td><a href="{plotly_page}"><img src="{state}/{f2}" style="width: 55vw; max-width: 100px;"></a></td>
         </tr>
     """, file=out)
 
@@ -42,7 +44,7 @@ def main():
 
     # Get list of PNG files
     statedir=pathlib.Path(f'{statedir}/')
-    suffixes = ['_trend', '_yellow_target', '_new_cases']
+    suffixes = ['_trend', '_yellow_target', '_new_cases', '_posneg']
     endings = [f'{suffix}.png' for suffix in suffixes]
     states = [path.name for path in statedir.iterdir() if path.is_dir()]
     all_files = {}
