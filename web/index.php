@@ -13,7 +13,7 @@
           <th>County</th>
           <th>New Cases</th>
           <th>Trend</th>
-          <th>Yellow Target</th>
+          <th>Per Capita</th>
         </tr>
       </thead>
       <tbody>
