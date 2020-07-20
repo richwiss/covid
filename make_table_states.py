@@ -6,6 +6,7 @@ import pandas as pd
 from datetime import date
 from collections import defaultdict
 import argparse
+import common
 
 def make_row(state, statefiles, out):
     pngs = [name for name in statefiles if name.endswith('.png')]
@@ -46,7 +47,15 @@ def main():
     statedir=pathlib.Path(f'{statedir}/')
     suffixes = ['_trend', '_yellow_target', '_new_cases', '_posneg']
     endings = [f'{suffix}.png' for suffix in suffixes]
-    states = [path.name for path in statedir.iterdir() if path.is_dir()]
+    graphed_states = set([path.name for path in statedir.iterdir() if path.is_dir()])
+
+    all_states = set([x.replace(' ','_') for x in common.state_d.values()])
+    all_territories = set([x.replace(' ','_') for x in common.territory_d.values()])
+
+    states = sorted(graphed_states.intersection(all_states))
+    territories = sorted(graphed_states.intersection(all_territories))
+    states.extend(territories)
+
     all_files = {}
     for state in states:
         statepath = statedir.joinpath(state)
@@ -75,7 +84,7 @@ def main():
     # Create the table.html file for the country
     ####
     # Make row for each state
-    for state in sorted(all_files):
+    for state in all_files:
         statefiles = all_files[state]
         make_row(state, statefiles, output)
 
