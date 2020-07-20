@@ -15,18 +15,19 @@ PREVDIR=$(pwd)
     REMOTE=$(git rev-parse @{u})
     if [ $LOCAL = $REMOTE ]; then
         echo "Up to date"
-        exit 1;
+    else
+	# pull JHU data
+	git pull
+	
+	# update covidtracking data only if JHU data changed
+	PREVDIR=$(pwd)
+	cd covidtracking
+	./update.sh
+	cd "$PREVDIR"
     fi
-    git pull 
+
     cd "$PREVDIR"
 
-# everything below assume JHU data was updated
-
-# update covidtracking data
-PREVDIR=$(pwd)
-    cd covidtracking
-    ./update.sh
-    cd "$PREVDIR"
 
 if [ -z ${COVIDDIR+x} ]; then
     export COVIDDIR="~/covid"
