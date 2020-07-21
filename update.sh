@@ -25,7 +25,7 @@ DIRONE=$(pwd)
 	DIRTWO=$(pwd)
 	cd covidtracking
 	./update.sh
-	cd "DIRTWO"
+	cd "$DIRTWO"
     fi
 
 
