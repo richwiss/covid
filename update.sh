@@ -15,9 +15,11 @@ DIRONE=$(pwd)
     REMOTE=$(git rev-parse @{u})
     if [ $LOCAL = $REMOTE ]; then
         echo "Up to date"
+	cd "$DIRONE"
     else
 	# pull JHU data
 	git pull
+	cd "$DIRONE"
 	
 	# update covidtracking data only if JHU data changed
 	DIRTWO=$(pwd)
@@ -26,7 +28,6 @@ DIRONE=$(pwd)
 	cd "DIRTWO"
     fi
 
-    cd "$DIRONE"
 
 
 if [ -z ${COVIDDIR+x} ]; then
