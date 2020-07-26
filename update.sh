@@ -8,26 +8,24 @@ if [ -z ${VIRTUAL_ENV+x} ]; then
 fi
 
 # update data from JHU
-DIRONE=$(pwd)
+BASEDIR=$(pwd)
     cd COVID-19 
     git remote update
     LOCAL=$(git rev-parse @)
     REMOTE=$(git rev-parse @{u})
     if [ $LOCAL = $REMOTE ]; then
         echo "Up to date"
-	cd "$DIRONE"
+	cd "$BASEDIR"
     else
 	# pull JHU data
 	git pull
-	cd "$DIRONE"
+	cd "$BASEDIR"
 	
 	# update covidtracking data only if JHU data changed
-	DIRTWO=$(pwd)
 	cd covidtracking
 	./update.sh
-	cd "$DIRTWO"
+	cd "$BASEDIR"
     fi
-
 
 
 if [ -z ${COVIDDIR+x} ]; then
