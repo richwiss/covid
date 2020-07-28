@@ -35,8 +35,12 @@ fi
 export STATEDIR="${COVIDDIR}/states"
 
 # create new graphs
-python3 plots.py --states ALL --graph_directory $COVIDDIR 
-#python3 plots.py --states ALL --graph_directory $COVIDDIR --ignore_timestamp
+if [ "$1" == "-f" ]; then
+    python3 plots.py --states ALL --graph_directory "$COVIDDIR" --ignore_timestamp
+else
+    python3 plots.py --states ALL --graph_directory "$COVIDDIR" 
+fi
+
 
 # update tables
 for state in Pennsylvania Florida Georgia New_Jersey New_York California North_Carolina Alabama Alaska Arizona Arkansas Colorado Connecticut Delaware District_of_Columbia Guam Hawaii Idaho Illinois Indiana Iowa Kansas Kentucky Louisiana Maine Maryland Massachusetts Michigan Minnesota Mississippi Missouri Montana Nebraska Nevada New_Hampshire New_Mexico North_Dakota Northern_Mariana_Islands Ohio Oklahoma Oregon  Rhode_Island South_Carolina South_Dakota Tennessee Texas Utah Vermont Virginia Virgin_Islands Washington West_Virginia Wisconsin Wyoming Puerto_Rico American_Samoa; do
