@@ -3,10 +3,7 @@
 
 # #### Todo
 # 
-# * read population data from JHU data instead of my counties file
 # * incorporate delco data?
-# * add positive test rate (requires reading in more data and munging it into the right format)
-# * save staging data to /tmp to speed up NFS if applicable
 # 
 
 import pandas as pd
@@ -25,7 +22,6 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import covidtracking
 import common
-import multiprocessing
 
 
 """
@@ -394,7 +390,7 @@ def run_pipeline_series(all_sdf, popdf, query_type, query_state=None, query_regi
     if query_type == 'State': # check is not None?
         ct_df = covidtracking.filter_by_state(covidtracking_df, query_state)
         df = pd.merge(df, ct_df)
-    
+    #print(f'{query_type} {query_state} {query_region} {query_county}')
     ckset = set(df.Combined_Key.values)
     assert len(ckset) == 1
     label = ckset.pop()
@@ -430,43 +426,16 @@ def move_state_files(olddir, newdir, extension='png', chmod=None):
                 if chmod:
                     newitem.chmod(chmod)
 
-## helper to move files from staging to published
-def move_files(olddir, newdir, glob='*.png', chmod=None):
-    olddir = pathlib.Path(olddir)
-    newdir = pathlib.Path(newdir)
-    for oldsubdir in olddir.iterdir():
-        if oldsubdir.is_dir():
-            newsubdir = newdir.joinpath(oldsubdir.name)
-            # Be sure subdir exists in newdir
-            pathlib.Path(newsubdir).mkdir(parents=True, exist_ok=True)
-            allfiles=oldsubdir.glob(glob)
-
-            for onefile in allfiles:
-                newpath = newsubdir.joinpath(onefile.name)
-                onefile.rename(newpath)
-                if chmod:
-                    newpath.chmod(chmod)
 
 ###########################################################################
-#### wrapper for subprocess version of generate_state_plots
-
-def pooler(tasks):
-    with multiprocessing.get_context("spawn").Pool() as pool:
-        pool.map(unwrap_generate_state_plots, tasks)
-
-
-def unwrap_generate_state_plots(kwargs):
-    """
-    args is a dictionary of parameters for generate_state_plots
-    """
-    generate_state_plots(**kwargs)
 
 #### Generate plots for the state
-def generate_state_plots(state, popdf, all_sdf, statedir, tempdir, use_plotly=True, ignore_timestamp=False,
-                        covidtracking_df=None, use_tqdm=True):
+def generate_state_plots(state, popdf, all_sdf, statedir, tempdir,
+                         use_plotly=True, ignore_timestamp=False,
+                         covidtracking_df=None, use_tqdm=True):
 
-    if not use_tqdm: print(f"START: {state}")
     ustate = state.replace(' ','_')
+    pid = os.getpid()
 
     if not ignore_timestamp:
         #state_stat_file = pathlib.Path(f'{statedir}/{ustate}/index.php')
@@ -477,7 +446,7 @@ def generate_state_plots(state, popdf, all_sdf, statedir, tempdir, use_plotly=Tr
             csv_path = pathlib.Path(confirmed_csv)
             csv_path_mtime = csv_path.stat().st_mtime
             if csv_path_mtime < state_stat_file_mtime:
-                print(f'Files up to date: {state}')
+                print(f'Files up to date: {state:30}\r', end="")
                 return
 
     outpath = pathlib.Path(f'{tempdir}/{ustate}')
@@ -507,13 +476,17 @@ def generate_state_plots(state, popdf, all_sdf, statedir, tempdir, use_plotly=Tr
 
     # COUNTIES
     pbar = wrapper(sorted(counties))
+    #pbar = [] # UNDO THIS
     for county in pbar:
-        if use_tqdm: 
+        if use_tqdm:
             pbar.set_description(f"{state}:{county:20}")
         else:
-            print(f"{state}:{county:20}")
-        run_pipeline_series(state_df, popdf, query_type="County", query_state=state, query_county=county, 
-                                        output="png", output_directory=outpath, use_plotly=use_plotly)
+            print(f"{pid:8} {state:20} {county:20}")
+
+        run_pipeline_series(state_df, popdf, query_type="County",
+                            query_state=state, query_county=county, 
+                            output="png", output_directory=outpath,
+                            use_plotly=use_plotly)
 
     # REGIONS
     pbar = wrapper(sorted(regions))
@@ -521,22 +494,23 @@ def generate_state_plots(state, popdf, all_sdf, statedir, tempdir, use_plotly=Tr
         if use_tqdm: 
             pbar.set_description(f"{state}:{region:20}")
         else:
-            print(f"{state}:{region:20}")
-        run_pipeline_series(state_df, popdf, query_type="Region", query_state=state, query_region=region, 
-                                    output="png", output_directory=outpath, use_plotly=use_plotly)
+            print(f"{pid:8} {state:20} {region:20}")
+        run_pipeline_series(state_df, popdf, query_type="Region",
+                            query_state=state, query_region=region, 
+                            output="png", output_directory=outpath,
+                            use_plotly=use_plotly)
 
     # STATE
-    run_pipeline_series(state_df, popdf, query_type="State", query_state=state, output='png',
-                        output_directory=outpath, use_plotly=use_plotly, covidtracking_df=covidtracking_df)
+    run_pipeline_series(state_df, popdf, query_type="State",
+                        query_state=state, output='png',
+                        output_directory=outpath, use_plotly=use_plotly,
+                        covidtracking_df=covidtracking_df)
     
     print(f'--> Moving staged files: {state}')
     tempdir_state = pathlib.Path(tempdir, ustate)
     statedir_state= pathlib.Path(statedir, ustate)
-    #move_files(tempdir_state, statedir_state, glob='*.png', chmod=0o644)
-    #move_files(tempdir_state, statedir_state, glob='*.html', chmod=0o644)
     move_state_files(tempdir_state, statedir_state, extension='png', chmod=0o644)
     move_state_files(tempdir_state, statedir_state, extension='html', chmod=0o644)
-    if not use_tqdm: print(f"\tEND: {state}")
 
 
 ###########################################################################
@@ -565,7 +539,7 @@ def parse_cmdline():
     parser.add_argument('--ignore_timestamp', action='store_true', help="Force rebuilding of graphs.")
     parser.add_argument('--graph_directory', help='Output directory for staging and published graphs.', 
                         default=defaultdir)
-    parser.add_argument('--parallel', action='store_true', help="Run parallelized")
+    parser.add_argument('--no_tqdm', action='store_true', help="Turn off tqdm")
     pargs = parser.parse_args()
     args = vars(pargs)
     return args
@@ -648,29 +622,17 @@ def main():
 
     ct_df = covidtracking.get_data(trim=True)
    
-    if args['parallel'] == False:
-        (statedir, tempdir) = set_outdirs(coviddir)
-        for state in states:
-            generate_state_plots(state, popdf, all_sdf, statedir, tempdir, ignore_timestamp=args['ignore_timestamp'],
-                                covidtracking_df = ct_df)
-
-    else:
-        (statedir, tempdir) = set_outdirs(coviddir)
-
-        tasks = []
-        for state in sorted(states):
-            kws = {'state': state, 'popdf': popdf, 'all_sdf': all_sdf, 'statedir': statedir, 'tempdir': tempdir,
-                    'ignore_timestamp': args['ignore_timestamp'], 'covidtracking_df': ct_df, 'use_tqdm': False}
-            tasks.append(kws)
-
-        pooler(tasks)
+    (statedir, tempdir) = set_outdirs(coviddir)
+    for state in states:
+        generate_state_plots(state, popdf, all_sdf, statedir, tempdir,
+                                ignore_timestamp=args['ignore_timestamp'],
+                                covidtracking_df = ct_df,
+                                use_tqdm=(not args['no_tqdm']))
 
     #df = one_off(all_sdf, popdf)
     return all_sdf, popdf
 ###########################################################################
 
-# water/parallel: 
-# water/serial:   
 if __name__ == '__main__':
     (all_sdf, popdf) = main()
 
