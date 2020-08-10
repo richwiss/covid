@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="../../mystyle.css">
   </head>
   <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-        <script src="http://wicentowski.com/covid/plotly.min.js"></script>    
+        <script src="https://wicentowski.com/covid/plotly.min.js"></script>    
   <body>
     <?php
       if (isset($_GET['location'])) {
