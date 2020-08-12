@@ -349,6 +349,7 @@ def pipeline_helper(df, label, output, output_directory, use_plotly=True):
     centered = False
     daily_new_cases(df) # add a new_cases column to the dataframe for the daily new cases
     average_new_cases(df, days, centered=centered) # adds average new cases in 'day_avg_{days}' column
+    average_new_cases(df, 7, centered=centered) # adds average new cases in 'day_avg_{days}' column
     trend(df, days) # add slope and trend data
     if has_covidtracking:
         ct_days = 7

@@ -144,13 +144,15 @@ def trending_plotly(df, label, days=14, output=None, pngScale=None):
 
 ########################################
 ## Yellow target: 50 new cases over 14 days per 100K people
+## Yellow target: 25 new cases over  7 days per 100K people
+
 def yellow_target_plotly(df, label, output=None, pngScale=None):
     population = set(df.Population).pop()
 
-    days = 14
-    target = 50
+    days = 7
+    target = 25
 
-    percap = df[f'day_avg_{days}']*100000 / population * 14
+    percap = df[f'day_avg_{days}']*100000 / population * days
     target_lst = [target] * len(df.Last_Update)
 
     fig = go.Figure()
@@ -186,7 +188,7 @@ def yellow_target_plotly(df, label, output=None, pngScale=None):
         hovermode="x unified",
     )
     fig.update_layout(layout)
-    title = f"New cases over 14 days per 100K residents: {label}"
+    title = f"New cases over {days} days per 100K residents: {label}"
     write_figure_plotly(fig, output, title, 'yellow_target', pngScale=pngScale)
 
 #####################################################################
