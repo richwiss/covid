@@ -40,7 +40,7 @@ pid1=$!
 python3 plots.py --states Georgia Indiana Iowa Kansas Nebraska "North Carolina" Ohio Tennessee --graph_directory "$COVIDDIR" --no_tqdm &
 pid2=$!
 
-python3 plots.py --states Alabama Arkansas California Florida Michigan Mississippi "New York" Oklahoma Pennsylvania "Puerto Rico" Wisconsin --graph_directory "$COVIDDIR" --no_tqdm &
+python3 plots.py --states Pennsylvania Florida Alabama Arkansas California Michigan Mississippi "New York" Oklahoma "Puerto Rico" Wisconsin --graph_directory "$COVIDDIR" --no_tqdm &
 pid3=$!
 
 python3 plots.py --states Alaska "American Samoa" Arizona Colorado Connecticut Delaware "District of Columbia" Guam Hawaii Idaho Louisiana Maine Maryland Massachusetts Montana Nevada "New Hampshire" "New Jersey" "New Mexico" "North Dakota" "Northern Mariana Islands" Oregon "Rhode Island" "South Carolina" "South Dakota" Utah Vermont "Virgin Islands" Washington "West Virginia" Wyoming --graph_directory "$COVIDDIR" --no_tqdm &
