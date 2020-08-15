@@ -13,6 +13,14 @@ def write_figure_plotly(fig, output, title, description, pngScale=None):
         title=title,
         showlegend=True,
     )
+
+    hlegend = go.Layout(legend=dict(
+    orientation="h",
+    yanchor="bottom",
+    y=1.02,
+    xanchor="right",
+    x=1))
+
     if output == 'inline':
         fig.update_layout(full_layout)
         fig.show()
@@ -20,6 +28,7 @@ def write_figure_plotly(fig, output, title, description, pngScale=None):
         output = output.replace("'","").replace('.png', f'_{description}.png')
         fig.write_image(output, scale=pngScale)
         fig.update_layout(full_layout)
+        fig.update_layout(hlegend)
         output = output.replace('.png', '.html')
         fig.write_html(output, include_plotlyjs=False, full_html=False)
 
@@ -82,7 +91,7 @@ def trending_plotly(df, label, days=14, output=None, pngScale=None):
         go.Bar(
             x = df.Last_Update,
             y = uptrend,
-            name = f'Days with a positive trend',
+            name = f'Days trending up',
             marker_color = 'red',
             marker_line_width=1,
             offset=0,
@@ -96,7 +105,7 @@ def trending_plotly(df, label, days=14, output=None, pngScale=None):
         go.Bar(
             x = df.Last_Update,
             y = downtrend,
-            name = f'Days with a negative trend',
+            name = f'Days trending down',
             marker_color = 'green',
             marker_line_width=1,
             offset=0,
@@ -115,7 +124,7 @@ def trending_plotly(df, label, days=14, output=None, pngScale=None):
         go.Scatter(
             x = df.Last_Update,
             y = df[sfield],
-            name = 'Slope of two-week trend',
+            name = 'Slope of trend',
             line_color='black',
             hovertemplate = '<b>%{y:.2f}</b>',
         ),

@@ -22,19 +22,26 @@ def parse_cmdline():
 def clean_labels(labels, basetext, dates=False):
     rgx = re.compile(r'^' + basetext + r' (... \d\d, 202\d) ([\d,]+)$')
 
+    print(f">>> {basetext}")
+    first = True
     data = []
     for (i, label) in enumerate(labels):
         m = rgx.search(label)
         if m:
             (date, value) = m.groups()
-            if i == 0:
-                assert date == 'Mar 01, 2020'
+            # In at least one file (2020-08-13), Feb 29 was the first date.
+            if first and date != 'Mar 01, 2020':
+                #print(f'Skipping {date}')
+                continue
+            first = False
+            #print(f'Processing {date}')
             if dates:
                 data.append(date)
             else:
                 data.append(int(value.replace(',','')))
         else:
             print(f'ERROR: {label}')
+    assert first == False
     return data
 
 
