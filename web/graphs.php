@@ -16,8 +16,8 @@
     <table class="serif">
       <tbody>
         <tr>
-          <td><?php $url = $location . '_new_cases.html'; include $url;?></td>
-          <td><?php $url = $location . '_yellow_target.html'; include $url;?></td>
+          <td width=600px><?php $url = $location . '_yellow_target.html'; include $url;?></td>
+          <td width=600px><?php $url = $location . '_new_cases.html'; include $url;?></td>
        </tr>
        <tr>
           <td><?php $url = $location . '_trend.html'; include $url;?></td>
