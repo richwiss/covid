@@ -22,7 +22,6 @@ def parse_cmdline():
 def clean_labels(labels, basetext, dates=False):
     rgx = re.compile(r'^' + basetext + r' (... \d\d, 202\d) ([\d,]+)$')
 
-    print(f">>> {basetext}")
     first = True
     data = []
     for (i, label) in enumerate(labels):
