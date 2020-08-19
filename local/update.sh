@@ -3,7 +3,7 @@
 # Convenience script to extract .csv/.txt from .html source
 
 if [ -z ${VIRTUAL_ENV+x} ]; then
-    echo "Error: Not in virtual environment: workon nlp"
+    echo "Error: Not in virtual environment."
     exit -1;
 fi
 
