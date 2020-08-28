@@ -42,7 +42,7 @@ def new_case_plotly(df, label, days=14, centered=False, output=None, pngScale=No
             x = df.Last_Update,
             y = df.New_Cases,
             mode = 'lines+markers',
-            name = 'Daily new cases',
+            name = 'Daily',
             line_color = plt_color['olive'],
             hovertemplate = '<b>%{y}</b>',
         )
@@ -53,7 +53,7 @@ def new_case_plotly(df, label, days=14, centered=False, output=None, pngScale=No
             x = df.Last_Update,
             y = df[f'day_avg_{days}'],
             mode = 'lines',
-            name = f'{days} day moving average',
+            name = f'{days} day average',
             line_color = plt_color['blue'],
             hovertemplate = '<b>%{y:.1f}</b>',
         )
@@ -124,7 +124,7 @@ def trending_plotly(df, label, days=14, output=None, pngScale=None):
         go.Scatter(
             x = df.Last_Update,
             y = df[sfield],
-            name = 'Slope of trend',
+            name = 'Δ trend',
             line_color='black',
             hovertemplate = '<b>%{y:.2f}</b>',
         ),
@@ -189,7 +189,7 @@ def yellow_target_plotly(df, label, output=None, pngScale=None):
     layout = go.Layout(
         showlegend=False,  # updated for inline and html
         xaxis_title="Date",
-        yaxis_title=f"Positive tests",
+        yaxis_title=f"Positive tests per capita",
         font=dict(
             size=12,
             color="#7f7f7f"
@@ -197,7 +197,7 @@ def yellow_target_plotly(df, label, output=None, pngScale=None):
         hovermode="x unified",
     )
     fig.update_layout(layout)
-    title = f"New cases over {days} days per 100K residents: {label}"
+    title = f"New cases/{days} days/100K people: {label}"
     write_figure_plotly(fig, output, title, 'yellow_target', pngScale=pngScale)
 
 #####################################################################
@@ -227,7 +227,7 @@ def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale
         go.Bar(
             x = df.Last_Update,
             y = daily_p,
-            name = f'Positive tests',
+            name = f'Positive',
             marker_color = 'red',
             marker_line_width=1,
             offset=0,
@@ -240,7 +240,7 @@ def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale
         go.Bar(
             x = df.Last_Update,
             y = daily_n,
-            name = f'Negative tests',
+            name = f'Negative',
             marker_color = 'green',
             marker_line_width=1,
             offset=0,
@@ -255,7 +255,7 @@ def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale
         go.Scatter(
             x = df.Last_Update,
             y = ptr100_field,
-            name = f'{days}-day positive test rate',
+            name = f'{days}-day pct. positive',
             line_color='black',
             hovertemplate = '<b>%{y:.1f}%</b>',
         ),
@@ -265,7 +265,7 @@ def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale
     layout = go.Layout(
         showlegend=False,  # updated for inline and html
         xaxis_title="Date",
-        yaxis_title=f"Tests",
+        yaxis_title=f"Number of tests",
         font=dict(
             size=12,
             color="#7f7f7f"
@@ -275,6 +275,8 @@ def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale
         yaxis = {'range': [0, y_max]},
         yaxis2= {'range': [0,100]}
     )
+
+    fig.update_yaxes(title_text="positive test percentage", secondary_y=True)
 
     fig.update_layout(layout)
     
