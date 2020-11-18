@@ -460,9 +460,9 @@ def generate_state_plots(state, popdf, all_sdf, statedir, tempdir,
         counties.add(county)
 
     regions = set(all_sdf.Region[(all_sdf.Region.notnull()) & (all_sdf.Province_State==state)])
-    if state == 'New York' and 'New York City' in regions:
+    #if state == 'New York' and 'New York City' in regions:
         # remove New York county -> already a New York region that is identical
-        counties -= set(['New York'])
+    #    counties -= set(['New York'])
     if state == 'Michigan':
         counties -= set(['Michigan Department of Corrections (MDOC)', 'Federal Correctional Institution (FCI)'])
 

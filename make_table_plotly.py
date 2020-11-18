@@ -171,7 +171,7 @@ def main():
         name = county_rgx.search(county_files[i]).group(1)
         data[name] = county_files[i:i+3]
 
-    nyc_boroughs = ['Bronx', 'Queens', 'New_York_City', 'New_York', 'Kings', 'Richmond']
+    nyc_boroughs = ['Bronx', 'Queens', 'New_York', 'Kings', 'Richmond']
     # Make region rows
     regionfiles = sorted([f for f in files if '_Region_' in f])
     rgx = re.compile(r'^(.*?)_Region_.*.png$')
@@ -179,20 +179,16 @@ def main():
         match = rgx.search(regionfiles[i])
         region = match.group(1)
         (state, county) = (statename, '')
-        if region == 'New_York_City':
-            region = 'New York City<BR/>(all boroughs)'
-            county = 'New York City'
         make_row([state, region, county], dir, regionfiles[i:i+3], output, phases, has_regions)
 
-        # Make country rows in the correct regions, if possible
+        # Make county rows in the correct regions, if possible
         for county in sorted(regions[region.replace('_', ' ')]):
             county = county.replace(' ', '_')
-            if not (statename == 'New_York' and county in nyc_boroughs):
-                countyfiles = data[county]
-                match = county_rgx.search(countyfiles[0])
-                countyname = match.group(1)
-                make_row([statename, region, countyname], dir, countyfiles, output, phases, has_regions)
-                data.pop(county)
+            countyfiles = data[county]
+            match = county_rgx.search(countyfiles[0])
+            countyname = match.group(1)
+            make_row([statename, region, countyname], dir, countyfiles, output, phases, has_regions)
+            data.pop(county)
 
     # Make country rows that weren't in regions
     for county in sorted(data.keys()):
