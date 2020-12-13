@@ -22,7 +22,7 @@ BASEDIR=$(pwd)
 	cd "$BASEDIR"
 	
 	# update covidtracking data only if JHU data changed
-	cd covidtracking
+	cd data/covidtracking
 	./update.sh
 	cd "$BASEDIR"
     fi

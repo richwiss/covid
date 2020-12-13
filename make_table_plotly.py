@@ -60,7 +60,7 @@ def make_row(labels, directory, files, out, phases, has_regions):
 def load_regions(statename):
     """ load population and region data for counties if applicable"""
 
-    population_loc = 'resources'
+    population_loc = 'data/resources'
     df = pd.read_csv(f'{population_loc}/county-populations.csv')
 
     regions = defaultdict(set)

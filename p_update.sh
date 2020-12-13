@@ -7,6 +7,18 @@ if [ -z ${VIRTUAL_ENV+x} ]; then
     exit -1;
 fi
 
+if [ -z ${1+x} ]; then # no command-line: proceed as usual
+    :  # do nothing
+else
+    if [ "$1" = "sleep" ]; then
+	SECONDS=$(($(date -f - +%s- <<< $'tomorrow 06:00\nnow')0))
+	echo "Sleeping $SECONDS seconds until 6am tomorrow"
+	# works in linux, not on a mac
+	sleep $SECONDS
+	date
+    fi
+fi
+
 # update data from JHU
 BASEDIR=$(pwd)
     cd COVID-19 
@@ -22,7 +34,7 @@ BASEDIR=$(pwd)
 	cd "$BASEDIR"
 	
 	# update covidtracking data only if JHU data changed
-	cd covidtracking
+	cd data/covidtracking
 	./update.sh
 	cd "$BASEDIR"
     fi

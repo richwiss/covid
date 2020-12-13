@@ -6,8 +6,10 @@ from plots_pylab import limit_xticks
 import common
 from plots_plotly import posNeg_rate_plotly
 
+path='data/covidtracking'
+
 def get_data(trim=False, clip_date=None):
-    tracking_loc='covidtracking/states'
+    tracking_loc=f'{path}/states'
     csv_file='daily.csv'
     df = pd.read_csv(f'{tracking_loc}/{csv_file}')
     df = df.rename(columns={"date": "Last_Update", "state": "Province_State"})

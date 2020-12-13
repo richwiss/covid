@@ -30,7 +30,7 @@ Global variables
 # Directory setup
 base_loc = '.'
 ## where population data is stored
-population_loc = f'{base_loc}/resources'
+population_loc = f'{base_loc}/data/resources'
 ## root directory of the JHU data repository
 jhu_loc = f'{base_loc}/COVID-19'
 series_loc = f'{jhu_loc}/csse_covid_19_data/csse_covid_19_time_series'
