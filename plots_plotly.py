@@ -224,27 +224,27 @@ def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     fig.add_trace(
-        go.Bar(
+        go.Scatter(
             x = df.Last_Update,
             y = daily_p,
             name = f'Positive',
             marker_color = 'red',
             marker_line_width=1,
-            offset=0,
             hovertemplate = '<b>%{y:8d}</b>',
+            fill='tozeroy'
         ),
         secondary_y=False,
     )
     
     fig.add_trace(
-        go.Bar(
+        go.Scatter(
             x = df.Last_Update,
             y = daily_n,
             name = f'Negative',
             marker_color = 'green',
             marker_line_width=1,
-            offset=0,
             hovertemplate = '<b>%{y:8d}</b>',
+            fill='tozeroy'
         ),
         secondary_y=False,
     )
