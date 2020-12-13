@@ -17,7 +17,7 @@
       <tbody>
         <tr>
           <td width=600px><?php $url = $location . '_yellow_target.html'; include $url;?></td>
-          <td width=600px><?php $url = $location . '_new_cases.html'; include $url;?></td>
+          <td width=600px><?php $url = $location . '_new_cases.html'; include $url;?><center><font color="#777777">Darker markers indicate Sundays</font></center></td>
        </tr>
        <tr>
           <td><?php $url = $location . '_trend.html'; include $url;?></td>
@@ -28,7 +28,7 @@
 
     <h4>
       <p>
-	Data from the <a href="https://github.com/CSSEGISandData/COVID-19">JHU CSSE COVID-19 Dataset</a> and the <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html">US Census Bureau</a>.<BR />
+	Data from the <a href="https://github.com/CSSEGISandData/COVID-19">JHU CSSE COVID-19 Dataset</a>, the <a href="https://www.census.gov/data/datasets/time-series/demo/popest/2010s-counties-total.html">US Census Bureau</a> and <a href="https://covidtracking.com">The COVID Tracking Project.</a><BR />
       Source code and data available from <a href="https://github.com/richwiss/covid">github</a>. Pull requests and comments welcome.<BR /> 
 	Created by <a href="https://twitter.com/richwiss/">@richwiss</a>
       </p>

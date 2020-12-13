@@ -1,5 +1,6 @@
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import pandas as pd
 
 # Match plotly colors to plt colors, if desired
 plt_color = {'blue': '#1f77b4', 'orange': '#ff7f0e', 'green': '#2ca02c', 'purple': '#9467bd', 'olive': '#bcbd22'}
@@ -33,8 +34,14 @@ def write_figure_plotly(fig, output, title, description, pngScale=None):
         fig.write_html(output, include_plotlyjs=False, full_html=False)
 
 ########################################
-## Daily new cases and 14-day moving average
+## Daily new cases and moving average
 def new_case_plotly(df, label, days=14, centered=False, output=None, pngScale=None):
+    def test_color(y):
+        dow = y.dayofweek
+        if y.dayofweek == 6:
+            return '#95961b' # dark olive
+        else:
+            return plt_color['olive']
 
     fig = go.Figure()
     fig.add_trace( # daily new cases
@@ -45,6 +52,7 @@ def new_case_plotly(df, label, days=14, centered=False, output=None, pngScale=No
             name = 'Daily',
             line_color = plt_color['olive'],
             hovertemplate = '<b>%{y}</b>',
+            marker=dict(color=list(map(test_color, df.Last_Update)))
         )
     )
 
@@ -82,19 +90,19 @@ def trending_plotly(df, label, days=14, output=None, pngScale=None):
 
     #formatted_dates = df['Last_Update'].apply(lambda x: x.strftime('%Y-%m-%d'))
 
-    uptrend = df['trend_14']
-    downtrend=df['trend_14']-14
+    uptrend = df[f'trend_{days}']
+    downtrend=df[f'trend_{days}']-days
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     fig.add_trace(
-        go.Bar(
+        go.Scatter(
             x = df.Last_Update,
             y = uptrend,
             name = f'Days trending up',
             marker_color = 'red',
             marker_line_width=1,
-            offset=0,
+            fill='tozeroy',
             hovertemplate = '<b>%{y}</b>',
         ),
         secondary_y=False,
@@ -102,14 +110,14 @@ def trending_plotly(df, label, days=14, output=None, pngScale=None):
     )
     
     fig.add_trace(
-        go.Bar(
+        go.Scatter(
             x = df.Last_Update,
             y = downtrend,
             name = f'Days trending down',
             marker_color = 'green',
             marker_line_width=1,
-            offset=0,
             text = -downtrend,
+            fill='tozeroy',
             hovertemplate = '<b>%{text}</b>',
         ),
         secondary_y=False,
@@ -140,7 +148,7 @@ def trending_plotly(df, label, days=14, output=None, pngScale=None):
             color="#7f7f7f"
         ),
         hovermode="x unified",
-        yaxis = {'range': [-14, 14], 'dtick':7},
+        yaxis = {'range': [-days, days], 'dtick':7},
         yaxis2= {'range': [secondary_min, secondary_max], 'showgrid': False}
     )
 
@@ -155,10 +163,9 @@ def trending_plotly(df, label, days=14, output=None, pngScale=None):
 ## Yellow target: 50 new cases over 14 days per 100K people
 ## Yellow target: 25 new cases over  7 days per 100K people
 
-def yellow_target_plotly(df, label, output=None, pngScale=None):
+def yellow_target_plotly(df, label, days=7, output=None, pngScale=None):
     population = set(df.Population).pop()
 
-    days = 7
     target = 25
 
     percap = df[f'day_avg_{days}']*100000 / population * days
@@ -169,7 +176,8 @@ def yellow_target_plotly(df, label, output=None, pngScale=None):
             go.Scatter(
                 x = df.Last_Update,
                 y = percap,
-                mode = 'lines+markers',
+                #mode = 'lines+markers',
+                mode = 'lines',
                 name = f'{days} day per 100K',
                 line_color = plt_color['blue'],
                 hovertemplate = '<b>%{y:.1f}</b>',
@@ -185,6 +193,10 @@ def yellow_target_plotly(df, label, output=None, pngScale=None):
             hoverinfo = "none",
         )
     )
+    
+    firstday = df.Last_Update.min()
+    lastday = df.Last_Update.max()
+    oneday = pd.tseries.offsets.Day(1)
 
     layout = go.Layout(
         showlegend=False,  # updated for inline and html
@@ -195,6 +207,7 @@ def yellow_target_plotly(df, label, output=None, pngScale=None):
             color="#7f7f7f"
         ),
         hovermode="x unified",
+        xaxis = {'range': [firstday-oneday, lastday+oneday]},
     )
     fig.update_layout(layout)
     title = f"New cases/{days} days/100K people: {label}"
@@ -202,12 +215,7 @@ def yellow_target_plotly(df, label, output=None, pngScale=None):
 
 #####################################################################
 # covidtracking.com graphs
-
-########################################
 ## Positive/negative tests and positive test rate
-
-########################################
-## Days trending downward in 14 days
 def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale=None):
     if clip_date:
         df = df[df['Last_Update'] > clip_date]
@@ -215,27 +223,14 @@ def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale
     ptr_field = f'daily_positive_rate_{days}'
     ptr100_field = df[ptr_field] * 100
 
-    daily_p = df.daily_positive
-    daily_n = df.daily_negative
+    daily_p = df[f'daily_positive_{days}']
+    daily_n = df[f'daily_negative_{days}']
 
     total = daily_p + daily_n
     y_max = max(total)*1.05
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-    fig.add_trace(
-        go.Scatter(
-            x = df.Last_Update,
-            y = daily_p,
-            name = f'Positive',
-            marker_color = 'red',
-            marker_line_width=1,
-            hovertemplate = '<b>%{y:8d}</b>',
-            fill='tozeroy'
-        ),
-        secondary_y=False,
-    )
-    
     fig.add_trace(
         go.Scatter(
             x = df.Last_Update,
@@ -248,19 +243,37 @@ def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale
         ),
         secondary_y=False,
     )
-
+    
+    fig.add_trace(
+        go.Scatter(
+            x = df.Last_Update,
+            y = daily_p,
+            name = f'Positive',
+            marker_color = 'red',
+            fillcolor='rgba(255,0,0,1)',
+            marker_line_width=1,
+            hovertemplate = '<b>%{y:8d}</b>',
+            fill='tozeroy'
+        ),
+        secondary_y=False,
+    )
+    
     fig.update_layout(barmode='stack')
 
     fig.add_trace(
         go.Scatter(
             x = df.Last_Update,
             y = ptr100_field,
-            name = f'{days}-day pct. positive',
+            name = f'pct. positive',
             line_color='black',
             hovertemplate = '<b>%{y:.1f}%</b>',
         ),
         secondary_y=True,
     )
+
+    firstday = df.Last_Update.min()
+    lastday = df.Last_Update.max()
+    oneday = pd.tseries.offsets.Day(1)
 
     layout = go.Layout(
         showlegend=False,  # updated for inline and html
@@ -272,6 +285,7 @@ def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale
         ),
         hovermode="x unified",
 
+        xaxis = {'range': [firstday-oneday, lastday+oneday]},
         yaxis = {'range': [0, y_max]},
         yaxis2= {'range': [0,100]}
     )
@@ -280,5 +294,5 @@ def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale
 
     fig.update_layout(layout)
     
-    title=f"Test results (covidtracking.com): {label}"
+    title=f"Test results ({days}-day average): {label}"
     write_figure_plotly(fig, output, title, 'posneg', pngScale=pngScale)

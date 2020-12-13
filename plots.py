@@ -359,7 +359,7 @@ def pipeline_helper(df, label, output, output_directory, use_plotly=True):
     if use_plotly:
         from plots_plotly import new_case_plotly, yellow_target_plotly, trending_plotly, posNeg_rate_plotly
         pngScale=0.25
-        new_case_plotly(df, label, days=days, centered=centered, output=output, pngScale=pngScale)    
+        new_case_plotly(df, label, days=7, centered=centered, output=output, pngScale=pngScale)    
         yellow_target_plotly(df, label, output=output, pngScale=pngScale)
         trending_plotly(df, label, output=output, pngScale=pngScale)
         if has_covidtracking:
