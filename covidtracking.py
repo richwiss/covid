@@ -11,16 +11,19 @@ path='data/covidtracking'
 def get_data(trim=False, clip_date=None):
     tracking_loc=f'{path}/states'
     csv_file='daily.csv'
-    df = pd.read_csv(f'{tracking_loc}/{csv_file}')
+    df = pd.read_csv(f'{tracking_loc}/{csv_file}', dtype={"dataQualityGrade": str})
     df = df.rename(columns={"date": "Last_Update", "state": "Province_State"})
     df['Province_State'] = df['Province_State'].apply(lambda x: common.merged_d[x])
 
     df.Last_Update = pd.to_datetime(df.Last_Update, format='%Y%m%d')
     if clip_date:
         # remove data before this date
-        df = df[df.Last_Update > clip_date]
+        df = df[df.Last_Update >= clip_date]
     if trim:
         df = df[['Last_Update', 'Province_State', 'positive', 'negative']]
+
+    df.sort_values(['Province_State','Last_Update'], inplace=True)
+    df.reset_index(drop=True,inplace=True)
 
     return df
     
@@ -29,13 +32,13 @@ def filter_by_state(df, state):
     state_df.reset_index(inplace=True)
     return state_df
     
-def augment(state_df, window=7):
+def augment(state_df, window=7, last_valid=None):
     """ add daily and average values to the data """
 
     # replace "NaN" values with zeros
     state_df['positive'].fillna(0, inplace=True)
     state_df['negative'].fillna(0, inplace=True)
-    
+
     # cumulative
     state_df['positive_rate'] = state_df.positive / (state_df.positive + state_df.negative)
 
@@ -56,6 +59,13 @@ def augment(state_df, window=7):
     state_df['daily_tests'] = state_df.tests.subtract(state_df.tests.shift(1), fill_value=0)
     nt = f'daily_tests_{window}'
     state_df[nt] = state_df.daily_tests.rolling(window=window, min_periods=1, center=False).mean()
+
+    # undo these stats for anything that isn't valid
+    if last_valid is not None:
+        columns = ['positive', 'negative','positive_rate', 'daily_positive', 
+                    'daily_negative', dp, dn, dpr, 'tests', 'daily_tests', nt]
+        state_df.loc[state_df.Last_Update > last_valid, columns] = np.nan
+
 
     return state_df
 
