@@ -5,6 +5,12 @@
   </head>
   <body>
     <h1>PAGE_TITLE</h1>
+    <p>
+    <a href="https://wicentowski.com/covid/viz/html/maps.html">
+      <img src="https://wicentowski.com/covid/states/counties.png"
+	   height=100px /><BR />
+      New! Maps (Beta)</a>
+    </p>
     <table class="serif">
       <thead>
         <tr>

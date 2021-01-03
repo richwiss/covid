@@ -5,6 +5,7 @@
   </head>
   <body>
     <h1>PAGE_TITLE</h1>
+    <p>
     <table class="serif">
       <thead>
         <tr>
@@ -20,7 +21,7 @@
         <?php include 'TABLE_HTML';?>
       </tbody>
     </table>
-
+    </p>
     <h4>
       <p>Data updated:  <?php
 			  echo date('l F d, Y \a\t H:i:s', filemtime("/home/richardw/Dropbox/covid/COVID-19/csse_covid_19_data/csse_covid_19_time_series/")); ?><BR />
