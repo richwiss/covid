@@ -37,7 +37,6 @@ def write_figure_plotly(fig, output, title, description, pngScale=None):
 ## Daily new cases and moving average
 def new_case_plotly(df, label, days=14, centered=False, output=None, pngScale=None):
     def test_color(y):
-        dow = y.dayofweek
         if y.dayofweek == 6:
             return '#95961b' # dark olive
         else:
@@ -158,6 +157,57 @@ def trending_plotly(df, label, days=14, output=None, pngScale=None):
     write_figure_plotly(fig, output, title, 'trend', pngScale=pngScale)
 
 
+def trending2_plotly(df, label, days=14, output=None, pngScale=None):
+    uptrend = df[f'trend_{days}']
+    downtrend=df[f'trend_{days}']-days
+
+    fig = make_subplots(specs=[[{"secondary_y": False}]])
+
+    fig.add_trace(
+        go.Scatter(
+            x = df.Last_Update,
+            y = uptrend,
+            name = f'Days trending up',
+            marker_color = 'red',
+            marker_line_width=1,
+            fill='tozeroy',
+            hovertemplate = '<b>%{y}</b>',
+        ),
+        secondary_y=False,
+
+    )
+    
+    fig.add_trace(
+        go.Scatter(
+            x = df.Last_Update,
+            y = downtrend,
+            name = f'Days trending down',
+            marker_color = 'green',
+            marker_line_width=1,
+            text = -downtrend,
+            fill='tozeroy',
+            hovertemplate = '<b>%{text}</b>',
+        ),
+        secondary_y=False,
+    )
+
+    layout = go.Layout(
+        showlegend=False,  # updated for inline and html
+        xaxis_title="Date",
+        yaxis_title=f"Number of days",
+        font=dict(
+            size=12,
+            color="#7f7f7f"
+        ),
+        hovermode="x unified",
+        yaxis = {'range': [-days, days], 'dtick':7},
+    )
+
+    fig.update_layout(layout)
+    
+    title=f"Two week trends: {label}"
+    write_figure_plotly(fig, output, title, 'trend', pngScale=pngScale)
+
 
 ########################################
 ## Yellow target: 50 new cases over 14 days per 100K people
@@ -216,9 +266,16 @@ def yellow_target_plotly(df, label, days=7, output=None, pngScale=None):
 #####################################################################
 # covidtracking.com graphs
 ## Positive/negative tests and positive test rate
-def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale=None):
+def posNeg_rate_plotly(df, label, days=14, clip_date=None, output=None, pngScale=None,
+                        tail_prune=False):
     if clip_date:
         df = df[df['Last_Update'] > clip_date]
+
+    if tail_prune:
+        # automatically stop the graph if it contains invalid data at the end
+        if len(df[df.positive.isnull()]) > 0:
+            first_invalid_date = min(df[df.positive.isnull()].Last_Update)
+            df = df[df['Last_Update'] < first_invalid_date]
 
     ptr_field = f'daily_positive_rate_{days}'
     ptr100_field = df[ptr_field] * 100
