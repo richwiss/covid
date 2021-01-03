@@ -12,7 +12,10 @@ if [ -z ${1+x} ]; then # no command-line: proceed as usual
 else
     if [ "$1" = "sleep" ]; then
 	SECONDS=$(($(date -f - +%s- <<< $'tomorrow 06:00\nnow')0))
-	echo "Sleeping $SECONDS seconds until 6am tomorrow"
+	if [ $SECONDS -gt 86400 ]; then # it's already after midnight
+	    SECONDS=$(($(date -f - +%s- <<< $'today 06:00\nnow')0))
+	fi
+	echo "Sleeping $SECONDS seconds until 6am"
 	# works in linux, not on a mac
 	sleep $SECONDS
 	date
@@ -46,13 +49,13 @@ fi
 
 export STATEDIR="${COVIDDIR}/states"
 
-python3 plots.py --states  Illinois Kentucky Minnesota Missouri Texas Virginia --graph_directory "$COVIDDIR" --no_tqdm & 
+python3 plots.py --states Illinois Kentucky Minnesota Missouri Texas Virginia --graph_directory "$COVIDDIR" --no_tqdm & 
 pid1=$!
 
 python3 plots.py --states Georgia Indiana Iowa Kansas Nebraska "North Carolina" Ohio Tennessee --graph_directory "$COVIDDIR" --no_tqdm &
 pid2=$!
 
-python3 plots.py --states Pennsylvania Florida Alabama Arkansas California Michigan Mississippi "New York" Oklahoma "Puerto Rico" Wisconsin --graph_directory "$COVIDDIR" --no_tqdm &
+python3 plots.py --states Pennsylvania Florida Alabama Arkansas California Michigan Mississippi "New York" Oklahoma "Puerto Rico" Wisconsin "United States" --graph_directory "$COVIDDIR" --no_tqdm &
 pid3=$!
 
 python3 plots.py --states Alaska "American Samoa" Arizona Colorado Connecticut Delaware "District of Columbia" Guam Hawaii Idaho Louisiana Maine Maryland Massachusetts Montana Nevada "New Hampshire" "New Jersey" "New Mexico" "North Dakota" "Northern Mariana Islands" Oregon "Rhode Island" "South Carolina" "South Dakota" Utah Vermont "Virgin Islands" Washington "West Virginia" Wyoming --graph_directory "$COVIDDIR" --no_tqdm &
@@ -87,3 +90,9 @@ if [ "${STATEDIR}/index.php" -ot "COVID-19/csse_covid_19_data/csse_covid_19_time
     chmod a+rX ${STATEDIR}/index.php ${STATEDIR}/table.html ${STATEDIR}/graphs.php
 fi
 
+BASEDIR=$(pwd)
+    cd viz/bin
+    ./update.sh
+    cd "$BASEDIR"
+
+date
