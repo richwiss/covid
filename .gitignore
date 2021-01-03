@@ -1,7 +1,7 @@
 # JHU COVID DATA
 COVID-19/
 # data directories
-covidtracking/
+data/
 #generated chesco
 local/chesco/*.txt
 local/chesco/*.csv
