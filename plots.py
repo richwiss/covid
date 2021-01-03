@@ -273,7 +273,7 @@ def average_new_cases(df, days, centered=False):
     """ this computes day the trailing average in the final day """
     """ compute the moving average over {days} days and add as day_avg_{days} to the df """
     field = f'day_avg_{days}'
-    df[field] = df.New_Cases.rolling(window=14, min_periods=1, center=centered).mean()
+    df[field] = df.New_Cases.rolling(window=days, min_periods=1, center=centered).mean()
 
 
 ## Calculate the average date from a list of dates (UNUSED)
