@@ -37,7 +37,6 @@ def main():
         coviddir = f'{home}/Desktop/covid'
     statedir = f'{coviddir}/states'
 
-    # Get the name of the state from the command-line arguments
     parser = argparse.ArgumentParser(description='Make an HTML table for all states.')
     parser.add_argument("-t", "--template", default="web/sindex.php", help="template for the table")
     args = parser.parse_args()
@@ -54,7 +53,9 @@ def main():
 
     states = sorted(graphed_states.intersection(all_states))
     territories = sorted(graphed_states.intersection(all_territories))
+    usa = 'United_States'
     states.extend(territories)
+    states.insert(0, usa)
 
     all_files = {}
     for state in states:
