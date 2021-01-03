@@ -8,6 +8,11 @@ local/chesco/*.csv
 #misc
 .DS_Store
 
+#viz products
+viz/lib/mapbox-token.yml
+viz/html/
+viz/bin/tests
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
