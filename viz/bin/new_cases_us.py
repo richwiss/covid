@@ -68,5 +68,3 @@ if __name__ == '__main__':
     htmldir = '../html'
     fig.write_html(f'{htmldir}/weekly_cases_us.html', include_plotlyjs=False, full_html=False)
     #fig.show()
-
-# remove 0s and/or fix utah
