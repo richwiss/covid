@@ -24,7 +24,7 @@ fi
 
 # update data from JHU
 BASEDIR=$(pwd)
-    cd COVID-19 
+    cd data/jhu
     git remote update
     LOCAL=$(git rev-parse @)
     REMOTE=$(git rev-parse @{u})
@@ -85,7 +85,7 @@ for state in Pennsylvania Florida Georgia New_Jersey New_York California North_C
 done
 
 echo "Building tables: Completed                    "
-if [ "${STATEDIR}/index.php" -ot "COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv" ]; then
+if [ "${STATEDIR}/index.php" -ot "data/jhu/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv" ]; then
     python3 make_table_states.py
     chmod a+rX ${STATEDIR}/index.php ${STATEDIR}/table.html ${STATEDIR}/graphs.php
 fi
