@@ -26,10 +26,12 @@ import sys
 import argparse
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import time
+
 import covidtracking
 import common
 import jhu
-import time
+import genstats
 
 """
 Global variables
@@ -98,17 +100,17 @@ def gen_state_plots(state, cdf, rdf, sdf, statedir, tempdir,
     pbar = wrapper(sorted(counties))
     for county in pbar:
         progress_update(use_tqdm, pbar, pid, f"{state}:{county:20}")
-        pipeline2(cdf[(cdf.Admin2==county)&(cdf.Province_State==state)], output_directory=outpath)
+        create_graphs(cdf[(cdf.Admin2==county)&(cdf.Province_State==state)], output_directory=outpath)
                     
     # REGIONS
     pbar = wrapper(sorted(regions))
     for region in pbar:
         progress_update(use_tqdm, pbar, pid, f"{state}:{region:20}")
-        pipeline2(rdf[(rdf.Region==region)&(rdf.Province_State==state)], output_directory=outpath)
+        create_graphs(rdf[(rdf.Region==region)&(rdf.Province_State==state)], output_directory=outpath)
 
     # STATE
     progress_update(use_tqdm, pbar, pid, f"{state}")
-    pipeline2(sdf[(sdf.Province_State==state)], output_directory=outpath)
+    create_graphs(sdf[(sdf.Province_State==state)], output_directory=outpath)
 
     print(f'--> Moving staged files: {state}')
     tempdir_state = pathlib.Path(tempdir, ustate)
@@ -133,7 +135,7 @@ def label_dataframe(df):
     return label
 
 ## For a given data frame, plot all of the graphs #xxxx
-def pipeline2(df, output='png', output_directory=None):
+def create_graphs(df, output='png', output_directory=None):
     """
     Start of rewrite. 
     """
@@ -238,11 +240,11 @@ def parse_cmdline():
 # One-off graphs
 def one_off(cdf, rdf, sdf, state=None, county=None, region=None, outpath=None):
     if county is not None:
-        pipeline2(cdf[(cdf.Province_State==state)&(cdf.Admin2==county)], output_directory=outpath)
+        create_graphs(cdf[(cdf.Province_State==state)&(cdf.Admin2==county)], output_directory=outpath)
     elif region is not None:
-        pipeline2(rdf[(rdf.Province_State==state)&(rdf.Region==region)], output_directory=outpath)
+        create_graphs(rdf[(rdf.Province_State==state)&(rdf.Region==region)], output_directory=outpath)
     else:
-        pipeline2(sdf[(sdf.Province_State==state)], output_directory=outpath)
+        create_graphs(sdf[(sdf.Province_State==state)], output_directory=outpath)
 ###########################################################################
 def read_data(clip_date=None):
     """
@@ -252,115 +254,12 @@ def read_data(clip_date=None):
       - cdf (dataframe with county-date rows)
       - ct_df (covidtracking data)
     """    
-    (popdf, jhudf, cdf) = jhu.read_annotated_jhu_data(omit_zero_counties=True)
+    (_, _, cdf) = jhu.read_annotated_jhu_data(omit_zero_counties=True)
     if clip_date:
         cdf = cdf[cdf['Last_Update'] >= clip_date].reset_index(drop=True)
     ct_df = covidtracking.get_data(trim=True, clip_date=clip_date)
 
     return (cdf, ct_df)
-
-###########################################################################
-def gen_new_cases(rowdf, groupby):
-    """
-    Purpose: Add the new_cases column to the dataframe
-    Inputs: row dataframe (rowdf) and how to groupby (state, county, region)
-    Side effect: Mutates the existing dataframe
-    """
-    rowdf['New_Cases'] = rowdf.groupby(groupby)['Confirmed'].diff()
-    rowdf['New_Cases'].fillna(0, inplace=True)
-
-def gen_average_new_cases(rowdf, groupby, days):
-    """
-    Purpose: Add the day_avg_{days} column to the dataframe
-    Inputs: row dataframe (rowdf), days to average over (days),
-            and how to groupby (state, county, region)
-    Side effect: Mutates the existing dataframe
-    """
-    field = f'day_avg_{days}'
-    rollfn = lambda x: x.rolling(window=days, min_periods=1).mean()
-    rowdf[field] = rowdf.groupby(groupby)['New_Cases'].transform(rollfn)
-
-def fit(period):
-    """ A function to find the best-fit line for a period of data """
-    if len(period) == 1:
-        return 0
-    else:
-        m, _ = np.polyfit(np.arange(len(period)), period, 1)
-        return m
-
-
-def gen_trend_original(rowdf, groupby, days=14, force=False):
-    """ 
-    **** Warning: this function is quite slow for counties ****
-
-    Purpose: compute the trendline for the past {days} days as slope_{days}
-    and the number of days within those {days} that the trend is worsening
-    (positive) or improving (negative) as trend_{days}
-    Side effect: Mutates the df to include slope_{days} and trend_{days}
-    """
-    if (not force) and ('Admin2' in rowdf): return
-
-    # Get the slope of the trend line for the past {days} days.
-    sfield=f'slope_{days}'
-    rollfn = lambda x: x.rolling(window=days, min_periods=1).apply(fit)
-    rowdf[sfield] = rowdf.groupby(groupby)['New_Cases'].transform(rollfn)
-
-    # Get the number of times the slope was positive in last {days} days.
-    tfield = f'trend_{days}'
-    rollfn1 = lambda x: x.rolling(window=days, min_periods=days).apply(lambda x: (x>0).sum())
-    #rollfn2 = lambda x: x.rolling(window=days, min_periods=days).apply(lambda x: x.gt(0).sum())
-
-    if 'Admin2' in rowdf: print(f'Generating county trends')
-    s = time.time()
-    rowdf[tfield] = rowdf.groupby(groupby)[sfield].transform(rollfn1)
-    e = time.time()
-    if 'Admin2' in rowdf: print(f'Elapsed: {e-s}s')
-
-def gen_trend_alternate(rowdf, groupby, days=14, force=False):
-    """ 
-    Purpose: compute the number of days within {days} days that
-    the trend is worsening (positive) or improving (negative) as trend_{days}
-    Side effect: Mutates the df to include trend_{days}
-    """
-    # Get the number of times the slope was positive in last {days} days.
-    if (not force) and ('Admin2' in rowdf): return
-
-    # Fake it for now
-    # Get the number of times the slope was positive in last {days} days.
-    tfield = f'trend_{days}'
-    sfield = f'day_avg_7_diff'
-    # hard code 7 bc day_avg_14 prob doesn't exist. we could make it if needed
-    rowdf[sfield] = rowdf.groupby(groupby)['day_avg_7'].diff(periods=7)
-    rollfn1 = lambda x: x.rolling(window=days, min_periods=days).apply(lambda x: (x>0).sum())
-    s = time.time()
-    rowdf[tfield] = rowdf.groupby(groupby)[sfield].transform(rollfn1)
-    e = time.time()
-    print(f'Elapsed: {e-s}s')
-
-
-
-###########################################################################
-# Generate various statistics on the data
-def gen_statistics(rowdf, groupby, no_trends=False):
-    """
-    Purpose: One-stop shopping for adding various statistics such as
-    daily new cases, 7-day rolling average, cases per 100K, etc.
-    """
-    # generate new case counts
-    gen_new_cases(rowdf, groupby)
-
-    # Add {days}-day moving average
-    days = 7
-    gen_average_new_cases(rowdf, groupby, days)
-
-    # Add {days}-day/per 100K
-    rowdf[f'percap_{days}'] = rowdf[f'day_avg_{days}']/rowdf['Population']*100000*days
-
-    # Generate 14-day trendlines the original way -- won't do counties by without force
-    gen_trend_original(rowdf, groupby, days=14, force=(no_trends==False))
-
-    # Generate 14-day trendlines -- won't do counties by without force
-    #gen_trend_alternate(rowdf, groupby)
 
 ###########################################################################
 def statedf_to_nationaldf(sdf, ct_df):
@@ -371,7 +270,7 @@ def statedf_to_nationaldf(sdf, ct_df):
     usdf = sdf.groupby(['Last_Update'])[['Confirmed','Population','positive','negative']].sum().reset_index()
     usdf['Province_State']="United States"
 
-    gen_statistics(usdf, groupby=['Province_State'])
+    genstats.gen_statistics(usdf, groupby=['Province_State'])
     usdf.sort_values(['Province_State','Last_Update'], inplace=True)
     usdf.reset_index(drop=True,inplace=True)
     covidtracking.augment(usdf, window=7, last_valid=max(ct_df.Last_Update))
@@ -386,7 +285,7 @@ def countydf_to_statedf(cdf, ct_df):
     Returns: A new state-level df
     """
     sdf = cdf.groupby(['Last_Update','Province_State'])[['Confirmed','Population']].sum().reset_index()
-    gen_statistics(sdf, groupby=['Province_State'])
+    genstats.gen_statistics(sdf, groupby=['Province_State'])
     sdf.sort_values(['Province_State','Last_Update'], inplace=True)
     sdf.reset_index(drop=True,inplace=True)
     # note that this merge potentially adds junk data in the last rows as the covidtracking
@@ -402,7 +301,7 @@ def countydf_to_regiondf(cdf):
     Returns: A new state-level df
     """
     rdf = cdf.groupby(['Last_Update','Region','Province_State'])[['Confirmed','Population']].sum().reset_index()
-    gen_statistics(rdf, groupby=['Region'])
+    genstats.gen_statistics(rdf, groupby=['Region'])
     rdf.sort_values(['Province_State','Region','Last_Update'], inplace=True)
     rdf.reset_index(drop=True,inplace=True)
 
@@ -419,7 +318,7 @@ if __name__ == '__main__':
     usdf= statedf_to_nationaldf(sdf, ct_df)
 
     cdf = cdf[cdf['Province_State'].isin(states)].reset_index(drop=True)
-    gen_statistics(cdf, groupby=['Admin2','Province_State'], no_trends=args['no_trends'])
+    genstats.gen_statistics(cdf, groupby=['Admin2','Province_State'], no_trends=args['no_trends'])
     rdf = countydf_to_regiondf(cdf)
 
     delco = cdf[(cdf.Province_State=='Pennsylvania')&(cdf.Admin2=='Delaware')]
