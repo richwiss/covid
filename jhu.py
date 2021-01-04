@@ -209,7 +209,9 @@ def fix_merged_counties(rowdf):
         ('Southwest Utah', 'Utah'): ['Beaver', 'Garfield', 'Iron', 'Kane', 'Washington'],
         ('TriCounty', 'Utah'): ['Daggett', 'Duchesne', 'Uintah'],
         ('Weber-Morgan', 'Utah'): ['Weber', 'Morgan'],
-        ('Dukes and Nantucket', 'Massachusetts'): ['Dukes', 'Nantucket']}
+        ('Dukes and Nantucket', 'Massachusetts'): ['Dukes', 'Nantucket'],
+        ('Bristol Bay plus Lake and Peninsula', 'Alaska'): ['Bristol Bay'],
+        }
 
     columns = ['Confirmed', 'Population']
 
@@ -219,7 +221,11 @@ def fix_merged_counties(rowdf):
                 rowdf.loc[(rowdf.Province_State==state)&(rowdf.Admin2==dst), column] = \
                     rowdf[rowdf.Admin2==src][column].to_list()
 
-
+    # rename 'Bristol Bay plus Lake and Peninsula' to just 'Lake and Peninsula'
+    rowdf.loc[(rowdf.Province_State=='Alaska')&(rowdf.Admin2=='Bristol Bay plus Lake and Peninsula'), \
+        'Admin2'] = 'Lake and Peninsula'
+    rowdf.loc[(rowdf.Province_State=='Alaska')&(rowdf.Admin2=='Bristol Bay plus Lake and Peninsula'), \
+        'Combined_Key'] = 'Lake and Peninsula, Alaska, US'
 ###########################################################################
 def fix_FIPS(df):
     """
