@@ -24,7 +24,7 @@ BASEDIR=$(pwd)
 
 # update data from JHU
 BASEDIR=$(pwd)
-    cd ../../COVID-19 
+    cd ../../data/jhu/
     git remote update
     LOCAL=$(git rev-parse @)
     REMOTE=$(git rev-parse @{u})
