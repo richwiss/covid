@@ -11,18 +11,25 @@
 import pandas as pd
 import numpy as np
 from collections import defaultdict
+import tqdm
 import re
 
 ###########################################################################
-# Global variables for directory setup
+# Directory setup
 
-base_loc = '.'
-## where population data is stored
-population_loc = f'{base_loc}/data/resources'
-## root directory of the JHU data repository
-jhu_loc = f'{base_loc}/COVID-19'
-series_loc = f'{jhu_loc}/csse_covid_19_data/csse_covid_19_time_series'
-confirmed_csv = f'{series_loc}/time_series_covid19_confirmed_US.csv'
+def setup_dirs(base_loc='.'):
+    global population_loc
+    global jhu_loc
+    global series_loc
+    global confirmed_csv
+
+    ## where population data is stored
+    population_loc = f'{base_loc}/data/resources'
+    ## root directory of the JHU data repository
+    jhu_loc = f'{base_loc}/data/jhu/'
+    series_loc = f'{jhu_loc}/csse_covid_19_data/csse_covid_19_time_series'
+    confirmed_csv = f'{series_loc}/time_series_covid19_confirmed_US.csv'
+setup_dirs()
 
 ###########################################################################
 
@@ -186,6 +193,33 @@ def unroll_dates(df):
 
     return df
 
+
+###########################################################################
+
+def fix_merged_counties(rowdf):
+    """
+    Purpose: Copy Confirmed cases and Population statistics over
+    to all of the counties that are part of a merged county.
+    Note: This should be done only for mapping purposes and should be done
+    before computing statistics.
+    """
+    regions = {('Southeast Utah', 'Utah'): ['Carbon', 'Emery', 'Grand', 'Sevier'],
+        ('Central Utah', 'Utah'): ['Juab', 'Millard', 'Piute', 'Sanpete', 'Wayne'],
+        ('Bear River', 'Utah'): ['Box Elder', 'Cache', 'Rich'],
+        ('Southwest Utah', 'Utah'): ['Beaver', 'Garfield', 'Iron', 'Kane', 'Washington'],
+        ('TriCounty', 'Utah'): ['Daggett', 'Duchesne', 'Uintah'],
+        ('Weber-Morgan', 'Utah'): ['Weber', 'Morgan'],
+        ('Dukes and Nantucket', 'Massachusetts'): ['Dukes', 'Nantucket']}
+
+    columns = ['Confirmed', 'Population']
+
+    for ((src, state), destinations) in tqdm.tqdm(regions.items()):
+        for dst in destinations:
+            for column in columns:
+                rowdf.loc[(rowdf.Province_State==state)&(rowdf.Admin2==dst), column] = \
+                    rowdf[rowdf.Admin2==src][column].to_list()
+
+
 ###########################################################################
 def fix_FIPS(df):
     """
@@ -196,7 +230,7 @@ def fix_FIPS(df):
     df['FIPS'] = df['FIPS'].apply(fn)
 
 ###########################################################################
-def read_annotated_jhu_data(omit_zero_counties=True):
+def read_annotated_jhu_data(omit_zero_counties=True, unmerge_counties=False):
     """
     Purpose: Read data sources from JHU and covidtracking.com
     """    
@@ -208,6 +242,9 @@ def read_annotated_jhu_data(omit_zero_counties=True):
     if omit_zero_counties:
         jhudf = drop_zero_counties(jhudf)
     rowdf = unroll_dates(jhudf)
+    if unmerge_counties:
+        fix_merged_counties(rowdf)
+
     rowdf.sort_values(['Province_State','Admin2','Last_Update'], inplace=True)
     rowdf.reset_index(drop=True,inplace=True)
 
