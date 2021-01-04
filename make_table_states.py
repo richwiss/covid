@@ -30,10 +30,9 @@ def make_row(state, statefiles, out):
 
 
 def main():
-
     coviddir = os.environ.get('COVIDDIR', None)
     if not coviddir:
-        home = os.environ.get('COVIDDIR', '.') # fallback to cwd
+        home = os.environ.get('HOME', '.') # fallback to cwd
         coviddir = f'{home}/Desktop/covid'
     statedir = f'{coviddir}/states'
 
