@@ -24,15 +24,19 @@ dff = pd.DataFrame.from_dict(\
     'iso': [codes[k] for k in sorted(keep)],
     'weekly_cases_per_million': [float(latest[k]) for k in sorted(keep)]})
 
+dff['cases/100K'] = dff['weekly_cases_per_million']/10
+
+
 #---------------------------------------------------------------
 
 def generate_figure():
     fig = px.choropleth(dff, locations="iso",
-                        color="weekly_cases_per_million",
+                        color="cases/100K",
                         hover_name="location",
-                        hover_data=['date'],
+                        #hover_data=['date'],
+                        hover_data={'date':True, 'cases/100K':':.1f','iso':False},
                         projection='natural earth',
-                        title='Weekly cases per million people',
+                        title='New Cases/7 days/100K',
                         color_continuous_scale=px.colors.sequential.OrRd)
 
     fig.update_layout(title=dict(font=dict(size=28),x=0.5,xanchor='center'),

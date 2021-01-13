@@ -212,7 +212,6 @@ def trending2_plotly(df, label, days=14, output=None, pngScale=None):
 ########################################
 ## Yellow target: 50 new cases over 14 days per 100K people
 ## Yellow target: 25 new cases over  7 days per 100K people
-
 def yellow_target_plotly(df, label, days=7, output=None, pngScale=None):
     population = set(df.Population).pop()
 
@@ -220,6 +219,9 @@ def yellow_target_plotly(df, label, days=7, output=None, pngScale=None):
 
     percap = df[f'day_avg_{days}']*100000 / population * days
     target_lst = [target] * len(df.Last_Update)
+    previous_week=pd.concat([pd.DataFrame([0]*7), percap],axis=0)
+    previous_week=previous_week.reset_index(drop=True)[:len(percap)]
+    previous_week.rename(columns={0:'previous'}, inplace=True)
 
     fig = go.Figure()
     fig.add_trace(
@@ -228,9 +230,10 @@ def yellow_target_plotly(df, label, days=7, output=None, pngScale=None):
                 y = percap,
                 #mode = 'lines+markers',
                 mode = 'lines',
+                customdata=previous_week,
                 name = f'{days} day per 100K',
                 line_color = plt_color['blue'],
-                hovertemplate = '<b>%{y:.1f}</b>',
+                hovertemplate = '<b>%{y:.1f}</b><BR>7 days ago : <b>%{customdata:.1f}</b>',
             )
     )
     fig.add_trace(

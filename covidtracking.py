@@ -1,5 +1,4 @@
 import pandas as pd
-import seaborn as sns
 import numpy as np
 from matplotlib import pyplot as plt
 from plots_pylab import limit_xticks

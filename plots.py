@@ -11,10 +11,8 @@
 # - Fake FIPS data for merged counties (Utah, Alaska, Massachusettes)
 # - Guam and Northern Mariana Islands (and maybe Virgin Islands) don't get mapped in county map
 # - switch weekly_cases to mapbox?
-
 import pandas as pd
 from matplotlib import pyplot as plt
-import seaborn as sns
 import datetime
 import numpy as np
 from tqdm import tqdm
@@ -37,11 +35,11 @@ import genstats
 Global variables
 """
 # Directory setup
-base_loc = '.'
+base_loc = './data/'
 ## where population data is stored
 population_loc = f'{base_loc}/data/resources'
 ## root directory of the JHU data repository
-jhu_loc = f'{base_loc}/COVID-19'
+jhu_loc = f'{base_loc}/jhu'
 series_loc = f'{jhu_loc}/csse_covid_19_data/csse_covid_19_time_series'
 confirmed_csv = f'{series_loc}/time_series_covid19_confirmed_US.csv'
 
@@ -310,7 +308,6 @@ def countydf_to_regiondf(cdf):
 if __name__ == '__main__':
     args = parse_cmdline()
     states = set_statelist(args['states'])
-
     clip_date = pd.to_datetime('03/01/2020')
     (cdf, ct_df) = read_data(clip_date=clip_date)
 
